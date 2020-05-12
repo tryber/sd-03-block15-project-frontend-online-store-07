@@ -1,9 +1,10 @@
-import { React } from 'react';
+import React from 'react';
+import BarraEsquerda from '../components/BarraEsquerda';
 
 function Home() {
   return (
     <div>
-      <div>Barra esquerda</div>
+      <div><BarraEsquerda /></div>
       <div>Barra de pesquisa</div>
       <div>Carrinho de compras</div>
       <div>Grid com os produtos</div>
