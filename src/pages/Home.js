@@ -1,4 +1,6 @@
 import React from 'react';
+import CarLink from '../components/CarLink';
+import GridProdutos from '../components/GridProdutos';
 import * as api from '../services/api';
 
 class Home extends React.Component {
@@ -19,7 +21,9 @@ class Home extends React.Component {
 
   handleSearchSubmit() {
     const { query } = this.state;
-    api.getProductsFromCategoryAndQuery('', query).then((data) => this.setState({ apiResults: data.results }));
+    api
+      .getProductsFromCategoryAndQuery('', query)
+      .then((data) => this.setState({ apiResults: data.results }));
   }
 
   render() {
@@ -45,9 +49,12 @@ class Home extends React.Component {
             Pesquisar
           </button>
         </div>
-        <div>Carrinho de compras</div>
-        <div>Produtos</div>
-        {apiResults}
+        <div>
+          <CarLink />
+        </div>
+        <div>
+          <GridProdutos products={apiResults}/>
+        </div>
       </div>
     );
   }
