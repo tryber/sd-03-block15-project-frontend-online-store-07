@@ -1,4 +1,5 @@
 import React from 'react';
+import BarraEsquerda from '../components/BarraEsquerda';
 import CarLink from '../components/CarLink';
 import GridProdutos from '../components/GridProdutos';
 import * as api from '../services/api';
@@ -9,10 +10,17 @@ class Home extends React.Component {
     this.state = {
       query: '',
       apiResults: [],
+      categories: [],
     };
 
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
+  }
+
+  componentDidMount() {
+    return api
+      .getCategories()
+      .then((data) => this.setState({ categories: [...data] }));
   }
 
   handleSearchInput(e) {
@@ -27,11 +35,13 @@ class Home extends React.Component {
   }
 
   render() {
-    const { query, apiResults } = this.state;
+    const { categories, query, apiResults } = this.state;
     console.log(query);
     return (
       <div>
-        <div>Barra esquerda</div>
+        <div>
+          <BarraEsquerda categorias={categories} />
+        </div>
         <div>
           <input
             data-testid="query-input"
