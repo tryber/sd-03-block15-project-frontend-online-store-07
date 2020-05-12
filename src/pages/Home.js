@@ -28,7 +28,7 @@ class Home extends React.Component {
     console.log(query);
     return (
       <div>
-        <div>Barra esquerda</div>
+        <BarraEsquerda />
         <div>
           <input
             data-testid="query-input"
