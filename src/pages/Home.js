@@ -53,7 +53,7 @@ class Home extends React.Component {
           <CarLink />
         </div>
         <div>
-          <GridProdutos products={apiResults}/>
+          <GridProdutos products={apiResults} />
         </div>
       </div>
     );
