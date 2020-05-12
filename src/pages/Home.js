@@ -37,10 +37,17 @@ class Home extends React.Component {
             value={query}
             onChange={this.handleSearchInput}
           />
-          <button data-testid="query-button" type="button" onClick={this.handleSearchSubmit}>Pesquisar</button>
+          <button
+            data-testid="query-button"
+            type="button"
+            onClick={this.handleSearchSubmit}
+          >
+            Pesquisar
+          </button>
         </div>
         <div>Carrinho de compras</div>
         <div>Produtos</div>
+        {apiResults}
       </div>
     );
   }
