@@ -1,7 +1,7 @@
 import React from 'react';
 import BarraEsquerda from '../components/BarraEsquerda';
-import CarLink from '../components/CarLink';
-import GridProdutos from '../components/GridProdutos';
+import { CarLink } from '../components/CarLink';
+import { GridProdutos } from '../components/GridProdutos';
 import * as api from '../services/api';
 
 class Home extends React.Component {
@@ -36,7 +36,6 @@ class Home extends React.Component {
 
   render() {
     const { categories, query, apiResults } = this.state;
-    console.log(query);
     return (
       <div>
         <div>
