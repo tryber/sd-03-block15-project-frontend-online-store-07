@@ -2,6 +2,7 @@ import React from 'react';
 import BarraEsquerda from '../components/BarraEsquerda';
 import { CarLink } from '../components/CarLink';
 import { GridProdutos } from '../components/GridProdutos';
+import MessagemInicial from '../components/MessagemInicial';
 import * as api from '../services/api';
 
 class Home extends React.Component {
@@ -62,7 +63,11 @@ class Home extends React.Component {
           <CarLink />
         </div>
         <div>
-          <GridProdutos products={apiResults} />
+          {apiResults.length === 0 ? (
+            <MessagemInicial />
+          ) : (
+            <GridProdutos products={apiResults} />
+          )}
         </div>
       </div>
     );
