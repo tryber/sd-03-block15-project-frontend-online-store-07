@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GridProdutos from '../components/GridProdutos';
+import { GridProdutos } from '../components/GridProdutos';
 import MensagemCarrinho from '../components/MensagemCarrinho';
 
 export class Cart extends Component {

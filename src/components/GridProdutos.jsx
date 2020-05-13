@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Card from './CardProduto';
 import { BotaoAdicionar } from './BotaoAdicionar';
+
 export class GridProdutos extends Component {
   render() {
     const { products } = this.props;
