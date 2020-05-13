@@ -4,9 +4,11 @@ class BarraEsquerda extends Component {
   render() {
     const { categorias } = this.props;
     return (
-      <div data-testid="category">
+      <div>
         {categorias.map((categoria) => (
-          <li key={categoria.id}>{categoria.name}</li>
+          <li key={categoria.id} data-testid="category">
+            {categoria.name}
+          </li>
         ))}
       </div>
     );

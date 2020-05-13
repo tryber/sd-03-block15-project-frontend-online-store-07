@@ -16,12 +16,13 @@ class Home extends React.Component {
 
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
+    this.searchBar = this.searchBar.bind(this);
   }
 
   componentDidMount() {
     return api
       .getCategories()
-      .then((data) => this.setState({ categories: [...data] }));
+      .then((data) => this.setState({ categories: data }));
   }
 
   handleSearchInput(e) {
@@ -35,30 +36,37 @@ class Home extends React.Component {
       .then((data) => this.setState({ apiResults: data.results }));
   }
 
+  searchBar() {
+    const { query } = this.state;
+    return (
+      <div>
+        <input
+          data-testid="query-input"
+          placeholder="Insira o caminho da imagem"
+          id="search-input"
+          type="text"
+          value={query}
+          onChange={this.handleSearchInput}
+        />
+        <button
+          data-testid="query-button"
+          type="button"
+          onClick={this.handleSearchSubmit}
+        >
+          Pesquisar
+        </button>
+      </div>
+    );
+  }
+
   render() {
-    const { categories, query, apiResults } = this.state;
+    const { categories, apiResults } = this.state;
     return (
       <div>
         <div>
           <BarraEsquerda categorias={categories} />
         </div>
-        <div>
-          <input
-            data-testid="query-input"
-            placeholder="Insira o caminho da imagem"
-            id="search-input"
-            type="text"
-            value={query}
-            onChange={this.handleSearchInput}
-          />
-          <button
-            data-testid="query-button"
-            type="button"
-            onClick={this.handleSearchSubmit}
-          >
-            Pesquisar
-          </button>
-        </div>
+        {this.searchBar()}
         <div>
           <CarLink />
         </div>
