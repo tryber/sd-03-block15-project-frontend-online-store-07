@@ -1,4 +1,8 @@
 import React from 'react';
+import BarraEsquerda from '../components/BarraEsquerda';
+import { CarLink } from '../components/CarLink';
+import { GridProdutos } from '../components/GridProdutos';
+import MessagemInicial from '../components/MessagemInicial';
 import * as api from '../services/api';
 
 class Home extends React.Component {
@@ -7,10 +11,18 @@ class Home extends React.Component {
     this.state = {
       query: '',
       apiResults: [],
+      categories: [],
     };
 
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
+    this.searchBar = this.searchBar.bind(this);
+  }
+
+  componentDidMount() {
+    return api
+      .getCategories()
+      .then((data) => this.setState({ categories: data }));
   }
 
   handleSearchInput(e) {
@@ -19,35 +31,52 @@ class Home extends React.Component {
 
   handleSearchSubmit() {
     const { query } = this.state;
-    api.getProductsFromCategoryAndQuery('', query).then((data) => this.setState({ apiResults: data.results }));
+    api
+      .getProductsFromCategoryAndQuery('', query)
+      .then((data) => this.setState({ apiResults: data.results }));
+  }
+
+  searchBar() {
+    const { query } = this.state;
+    return (
+      <div>
+        <input
+          data-testid="query-input"
+          placeholder="Insira o caminho da imagem"
+          id="search-input"
+          type="text"
+          value={query}
+          onChange={this.handleSearchInput}
+        />
+        <button
+          data-testid="query-button"
+          type="button"
+          onClick={this.handleSearchSubmit}
+        >
+          Pesquisar
+        </button>
+      </div>
+    );
   }
 
   render() {
-    const { query, apiResults } = this.state;
-    console.log(query);
+    const { categories, apiResults } = this.state;
     return (
       <div>
-        <div>Barra esquerda</div>
         <div>
-          <input
-            data-testid="query-input"
-            placeholder="Insira o caminho da imagem"
-            id="search-input"
-            type="text"
-            value={query}
-            onChange={this.handleSearchInput}
-          />
-          <button
-            data-testid="query-button"
-            type="button"
-            onClick={this.handleSearchSubmit}
-          >
-            Pesquisar
-          </button>
+          <BarraEsquerda categorias={categories} />
         </div>
-        <div>Carrinho de compras</div>
-        <div>Produtos</div>
-        {apiResults}
+        {this.searchBar()}
+        <div>
+          <CarLink />
+        </div>
+        <div>
+          {apiResults.length === 0 ? (
+            <MessagemInicial />
+          ) : (
+            <GridProdutos products={apiResults} />
+          )}
+        </div>
       </div>
     );
   }

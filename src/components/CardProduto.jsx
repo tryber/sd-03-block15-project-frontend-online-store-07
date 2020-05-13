@@ -5,11 +5,11 @@ export class CardProduto extends Component {
     const { product } = this.props;
     const { id, title, thumbnail, price, onAddToCart } = product;
     return (
-      <div>
-        <h4 data-testid="product">{title}</h4>
-        <h5 data-testid="product">{id}</h5>
-        <img data-testid="product" src={thumbnail} alt={title} />
-        <h5 data-testid="product">{price}</h5>
+      <div data-testid="product">
+        <h4>{title}</h4>
+        <h5>{id}</h5>
+        <img src={thumbnail} alt={title} />
+        <h5>{price}</h5>
         <button
           type="button"
           onClick={onAddToCart}
