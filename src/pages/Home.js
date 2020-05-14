@@ -51,8 +51,10 @@ class Home extends React.Component {
               <BarraEsquerda
                 categorias={categories}
                 selectedCategory={selectedCategory}
-                onCategoryChange={(e) => this.setState({ selectedCategory: e.target.value, 
-                  callAPI: true })}
+                onCategoryChange={(e) => this.setState({
+                  selectedCategory: e.target.value,
+                  callAPI: true
+                })}
               />
             </Grid>
             <Grid item xs={6}>
