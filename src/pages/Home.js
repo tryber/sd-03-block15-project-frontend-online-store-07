@@ -18,6 +18,7 @@ class Home extends React.Component {
       callAPI: false,
     };
     this.callApi = this.callApi.bind(this);
+    this.categoryChange = this.categoryChange.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +42,13 @@ class Home extends React.Component {
     this.setState({ callAPI: true, query });
   }
 
+  categoryChange(value) {
+    this.setState({
+      selectedCategory: value,
+      callAPI: true,
+    })
+  }
+
   render() {
     const { categories, apiResults, selectedCategory } = this.state;
     return (
@@ -51,10 +59,7 @@ class Home extends React.Component {
               <BarraEsquerda
                 categorias={categories}
                 selectedCategory={selectedCategory}
-                onCategoryChange={(e) => this.setState({
-                  selectedCategory: e.target.value,
-                  callAPI: true
-                })}
+                onCategoryChange={(e) => this.categoryChange(e.target.value)}
               />
             </Grid>
             <Grid item xs={6}>
