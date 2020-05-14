@@ -12,14 +12,7 @@ class Checkout extends Component {
         price: 849,
         thumbnail: 'http://mlb-s1-p.mlstatic.com/964021-MLA31350197875_072019-I.jpg',
       }],
-      comprador: {},
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(comprador) {
-    this.setState({ comprador });
-    console.log(comprador);
   }
 
   render() {
@@ -32,7 +25,7 @@ class Checkout extends Component {
           <GridProdutos products={falseProducts} />
         </div>
         <div>
-          <CheckoutForm onClick={this.handleSubmit} />
+          <CheckoutForm />
         </div>
         <div>
           Informações do comprador:

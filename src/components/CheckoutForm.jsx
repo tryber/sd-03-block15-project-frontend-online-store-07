@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -10,6 +11,8 @@ class CheckoutForm extends Component {
       phone: '',
       cep: '',
       adress: '',
+      paymentMethod: '',
+      redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,9 +24,8 @@ class CheckoutForm extends Component {
     console.log(this.state);
   }
 
-  handleSubmit() {
-    const { onClick } = this.props;
-    onClick(this.state);
+  handleSubmit(e) {
+    e.preventDefault();
     this.setState({
       fullname: '',
       email: '',
@@ -31,7 +33,25 @@ class CheckoutForm extends Component {
       phone: '',
       cep: '',
       adress: '',
+      paymentMethod: '',
+      redirect: true,
     });
+  }
+
+  payments() {
+    const { paymentMethod } = this.state;
+    return (
+      <div>
+        <label htmlFor="payment-method">
+          Método de pagamento
+          <select id="payment-method" value={paymentMethod} onChange={(e) => this.handleChange(e, 'payment-method')}>
+            <option value="credit-card">Cartão de Credíto</option>
+            <option value="debit-card">Cartão de Débito</option>
+            <option value="billet">Boleto Bancário</option>
+          </select>
+        </label>
+      </div>
+    );
   }
 
   personalInfo() {
@@ -75,13 +95,16 @@ class CheckoutForm extends Component {
   }
 
   render() {
+    const { redirect } = this.state;
+    if (redirect) return <Redirect to="/" />;
     return (
       <div>
-        <form>
+        <form onSubmit={this.handleSubmit}>
+          {this.payments()}
           {this.personalInfo()}
           {this.adressInfo()}
           <div>
-            <button type="button" onClick={this.handleSubmit}>Finalizar Compra</button>
+            <button type="submit">Finalizar Compra</button>
           </div>
         </form>
       </div>
