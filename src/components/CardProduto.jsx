@@ -9,7 +9,7 @@ export class CardProduto extends Component {
       thumbnail,
       price,
       available_quantity: availableQuantity,
-      shipping: { free_shipping: freeShipping },
+      // shipping: { free_shipping: freeShipping },
     } = product;
     return (
       <div data-testid="product">
@@ -24,7 +24,7 @@ export class CardProduto extends Component {
           Quantidade disponível:
           {availableQuantity}
         </h5>
-        {freeShipping === true ? <h6>FRETE GRÁTIS</h6> : <h6>FRETE PAGO</h6>}
+        {/* {freeShipping === true ? <h6>FRETE GRÁTIS</h6> : <h6>FRETE PAGO</h6>} */}
         <button
           type="button"
           onClick={onClick}

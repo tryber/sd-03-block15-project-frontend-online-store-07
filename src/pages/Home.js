@@ -39,7 +39,6 @@ class Home extends React.Component {
   }
 
   addToCart(product) {
-    console.log(localStorage.products);
     const { id, title, price, thumbnail } = product;
     const quantity = 1;
     const cartStorage = JSON.parse(localStorage.getItem('products') || '[]');
@@ -65,6 +64,7 @@ class Home extends React.Component {
         0,
       ),
     });
+    console.log(localStorage.products);
   }
 
   searchBar() {
