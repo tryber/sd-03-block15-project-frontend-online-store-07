@@ -12,10 +12,6 @@ export class FormAvaliacao extends Component {
     this.setaNota = this.setaNota.bind(this);
   }
 
-    setaNota(valor) {
-      this.setState({ nota: valor });
-    }
-
   evtMapper(event, name) {
     const { value } = event.target;
     this.setState({ [name]: value });
