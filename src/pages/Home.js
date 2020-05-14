@@ -13,8 +13,11 @@ class Home extends React.Component {
     this.state = {
       apiResults: [],
       categories: [],
+      selectedCategory: '',
+      query: '',
+      callAPI: false,
     };
-    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.callApi = this.callApi.bind(this);
   }
 
   componentDidMount() {
@@ -23,23 +26,36 @@ class Home extends React.Component {
       .then((data) => this.setState({ categories: data }));
   }
 
-  handleSearchSubmit(category = '', query) {
-    api
-      .getProductsFromCategoryAndQuery(category, query)
-      .then((data) => this.setState({ apiResults: data.results }));
+  componentDidUpdate() {
+    const { callAPI, selectedCategory, query } = this.state;
+    if (callAPI) {
+      api.getProductsFromCategoryAndQuery(selectedCategory, query)
+        .then((data) => this.setState({
+          apiResults: data.results,
+          callAPI: false,
+        }));
+    }
+  }
+
+  callApi(query) {
+    this.setState({ callAPI: true, query });
   }
 
   render() {
-    const { categories, apiResults } = this.state;
+    const { categories, apiResults, selectedCategory } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
           <Grid container spacing={5}>
             <Grid item xs={3}>
-              <BarraEsquerda categorias={categories} />
+              <BarraEsquerda
+                categorias={categories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={(e) => this.setState({ selectedCategory: e.target.value, callAPI: true })}
+              />
             </Grid>
             <Grid item xs={6}>
-              <BarraPesquisa onClick={this.handleSearchSubmit} />
+              <BarraPesquisa onClick={this.callApi} />
               <div>
                 {apiResults.length === 0 ? (
                   <MessagemInicial />
