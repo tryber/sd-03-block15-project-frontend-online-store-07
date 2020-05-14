@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
 
 export class CardProduto extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      product: this.props.product,
+    }
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const { onClick } = this.props;
+    onClick(this.state.product);
+  }
+
   render() {
-    const { product, onClick } = this.props;
+    const { product } = this.state;
     const {
       id,
       title,
@@ -27,7 +40,7 @@ export class CardProduto extends Component {
         {/* {freeShipping === true ? <h6>FRETE GRÁTIS</h6> : <h6>FRETE PAGO</h6>} */}
         <button
           type="button"
-          onClick={onClick}
+          onClick={this.handleClick}
           data-testid="product-add-to-cart"
         >
           Adicionar ao Carrinho

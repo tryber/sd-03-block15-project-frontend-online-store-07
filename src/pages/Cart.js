@@ -99,6 +99,7 @@ export class Cart extends Component {
 
   render() {
     const { selectedProducts } = this.state;
+    console.log(selectedProducts);
     if (selectedProducts && selectedProducts.length !== 0) {
       return (
         <div>
