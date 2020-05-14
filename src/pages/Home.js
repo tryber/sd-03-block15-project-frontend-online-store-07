@@ -46,7 +46,7 @@ class Home extends React.Component {
     this.setState({
       selectedCategory: value,
       callAPI: true,
-    })
+    });
   }
 
   render() {
