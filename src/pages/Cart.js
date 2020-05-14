@@ -6,67 +6,120 @@ export class Cart extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      emptyCart: true,
-      cartItems: [],
-      cartItemsQuantity: 0,
-      cartTotalValue: 0,
-    };
+    const cartProducts = JSON.parse(localStorage.getItem('products'));
 
-    this.emptyCartState = this.emptyCartState.bind(this);
-    this.cartValueSum = this.cartValueSum.bind(this);
+    this.state = { selectedProducts: cartProducts };
+
+    this.removeFromCart = this.removeFromCart.bind(this);
+    this.changeQuantity = this.changeQuantity.bind(this);
   }
 
-  componentDidMount() {
-    const carStorage = JSON.parse(localStorage.getItem('products') || '[]');
-    if (carStorage.length > 0) {
-      this.setState({
-        emptyCart: false,
-        cartItems: carStorage,
-        cartItemsQuantity: carStorage.length,
-      });
+  changeQuantity(value, id) {
+    const { selectedProducts } = this.state;
+    parseInt(id, 10);
+    const productIndex = selectedProducts.findIndex((element) => element.id === id);
+    if (value === 'up') selectedProducts[productIndex].quantity += 1;
+    else if (selectedProducts[productIndex].quantity > 1) {
+      selectedProducts[productIndex].quantity -= 1;
     }
+    this.setState({ selectedProducts });
   }
 
-  componentDidUpdate(prevState) {
-    const { cartItemsQuantity, cartTotalValue } = this.state;
-    if (
-      cartItemsQuantity === 0 && cartItemsQuantity !== prevState.cartItemsQuantity
-    ) {
-      this.emptyCartState();
-    }
-    if (
-      cartTotalValue !== prevState.cartTotalValue ||
-      cartItemsQuantity !== prevState.cartItemsQuantity
-    ) {
-      this.cartValueSum();
-    }
+  createQtdButton(quantity, id) {
+    return (
+      <div>
+        <button
+          data-testid="product-increase-quantity"
+          type="button"
+          onClick={() => this.changeQuantity('up', id)}
+        >
+          <i className="fas fa-plus-square" />
+        </button>
+        <input type="input" className="input_qtd" value={quantity} />
+        <button
+          data-testid="product-decreate-quantity"
+          type="button"
+          onClick={() => this.changeQuantity('down', id)}
+        >
+          <i className="fas fa-minus-square" />
+        </button>
+      </div>
+    );
   }
 
-  emptyCartState() {
-    this.setState({ emptyCart: true });
+  removeFromCart(event) {
+    const { selectedProducts } = this.state;
+    const { id } = event.target;
+    const items = selectedProducts.map((product) => product.id).indexOf(id);
+    selectedProducts.splice(items, 1);
+    this.setState({ selectedProducts });
   }
 
-  cartValueSum() {
-    const carStorage = JSON.parse(localStorage.getItem('products') || '[]');
-    const carTotal = carStorage
-      .map((item) => item.price * item.quantity)
-      .reduce((acc, curr) => acc + curr, 0);
-    localStorage.setItem('cartTotalValue', JSON.stringify(carTotal));
-    this.setState(() => ({ cartTotalValue: carTotal }));
+  createRemoveButton(id) {
+    return (
+      <div>
+        <button type="button" id={id} onClick={this.removeFromCart}>
+          <i className="fas fa-trash-alt">REMOVER TUDO</i>
+        </button>
+      </div>
+    );
+  }
+
+  createCardProducts(title, thumbnail, price, id, quantity) {
+    return (
+      <div key={id}>
+        <div>{this.createRemoveButton(id)}</div>
+        <div>
+          <img src={thumbnail} alt={title} />
+        </div>
+        <div>{title}</div>
+        <div>{this.createQtdButton(quantity, id)}</div>
+        <div>{price}</div>
+      </div>
+    );
+  }
+
+  cartTotal() {
+    const { selectedProducts } = this.state;
+    const cartTotal = selectedProducts.reduce((accumulator, currentValue) => {
+      const { price, quantity } = currentValue;
+      const totalValue = parseFloat(accumulator + price * quantity);
+      return totalValue;
+    });
+    localStorage.setItem('cartTotal', cartTotal);
+    return (
+      <div>
+        <p>
+          Total da Compra:
+          {cartTotal}
+        </p>
+      </div>
+    );
   }
 
   render() {
-    const { emptyCart, cartItems, cartTotalValue } = this.state;
-
-    if (emptyCart) return <MensagemCarrinho />;
-
-    return (
-      <div>
-        <GridProdutos products={cartItems} />
-        <p>{cartTotalValue}</p>
-      </div>
-    );
+    const { selectedProducts } = this.state;
+    if (selectedProducts && selectedProducts.length !== 0) {
+      return (
+        <div>
+          <div>
+            {selectedProducts.map(
+              ({ title, thumbnail, price, id, quantity }) => {
+                return this.createCardProducts(
+                  title,
+                  thumbnail,
+                  price,
+                  id,
+                  quantity,
+                );
+              },
+            )}
+          </div>
+          {this.cartTotal()}
+        </div>
+      );
+    }
+    return <MensagemCarrinho />;
   }
 }
 

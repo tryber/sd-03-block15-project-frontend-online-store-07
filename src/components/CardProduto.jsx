@@ -9,7 +9,7 @@ export class CardProduto extends Component {
       thumbnail,
       price,
       available_quantity: availableQuantity,
-      // shipping: { free_shipping: freeShipping },
+      shipping: { free_shipping: freeShipping },
     } = product;
     return (
       <div data-testid="product">
