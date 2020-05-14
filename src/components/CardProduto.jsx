@@ -1,23 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export class CardProduto extends Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
-    this.state = {
-      product: this.props.product,
-    }
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    const { onClick } = this.props;
-    onClick(this.state.product);
-  }
-
-  render() {
-    const { product } = this.state;
-=======
 
     this.addToCart = this.addToCart.bind(this);
   }
@@ -43,7 +29,6 @@ export class CardProduto extends Component {
 
   render() {
     const { product } = this.props;
->>>>>>> eb674d90ee74e08a57dade137dcbfef860cda37c
     const {
       id,
       title,
@@ -68,15 +53,12 @@ export class CardProduto extends Component {
         {freeShipping === true ? <h6>FRETE GRÁTIS</h6> : <h6>FRETE PAGO</h6>}
         <button
           type="button"
-<<<<<<< HEAD
-          onClick={this.handleClick}
-=======
           onClick={this.addToCart}
->>>>>>> eb674d90ee74e08a57dade137dcbfef860cda37c
           data-testid="product-add-to-cart"
         >
           Adicionar ao Carrinho
         </button>
+        <Link to={{ pathname: `/details/${id}`, state: { product } }}>Detalhes</Link>
       </div>
     );
   }
