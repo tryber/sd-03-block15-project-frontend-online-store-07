@@ -64,7 +64,7 @@ class CheckoutForm extends Component {
         </label>
         <label htmlFor="email">
           Email
-          <input type="text" required data-testid="checkout-email" id="email" value={email} onChange={(e) => this.handleChange(e, 'email')} />
+          <input type="email" required data-testid="checkout-email" id="email" value={email} onChange={(e) => this.handleChange(e, 'email')} />
         </label>
         <label htmlFor="cpf">
           CPF
