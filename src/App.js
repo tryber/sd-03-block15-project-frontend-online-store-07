@@ -5,6 +5,7 @@ import Cart from './pages/Cart';
 import Details from './pages/Details';
 import Checkout from './pages/Checkout';
 
+
 function App() {
   return (
     <div className="App">
