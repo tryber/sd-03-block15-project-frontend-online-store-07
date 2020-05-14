@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { GridProdutos } from '../components/GridProdutos';
 import MensagemCarrinho from '../components/MensagemCarrinho';
 
 export class Cart extends Component {
@@ -8,9 +7,7 @@ export class Cart extends Component {
 
     const cartProducts = JSON.parse(localStorage.getItem('products'));
 
-    this.state = {
-      selectedProducts: cartProducts,
-    };
+    this.state = { selectedProducts: cartProducts };
 
     this.removeFromCart = this.removeFromCart.bind(this);
     this.changeQuantity = this.changeQuantity.bind(this);
@@ -19,10 +16,11 @@ export class Cart extends Component {
   changeQuantity(value, id) {
     const { selectedProducts } = this.state;
     parseInt(id, 10);
-    const productIndex = selectedProducts.findIndex((el) => el.id === id);
+    const productIndex = selectedProducts.findIndex((element) => element.id === id);
     if (value === 'up') selectedProducts[productIndex].quantity += 1;
-    if (selectedProducts[productIndex].quantity > 1)
+    else if (selectedProducts[productIndex].quantity > 1) {
       selectedProducts[productIndex].quantity -= 1;
+    }
     this.setState({ selectedProducts });
   }
 
@@ -59,26 +57,68 @@ export class Cart extends Component {
   createRemoveButton(id) {
     return (
       <div>
-        <button
-          type="button"
-          id={id}
-          onClick={this.removeFromCart}
-        >
+        <button type="button" id={id} onClick={this.removeFromCart}>
           <i className="fas fa-trash-alt">REMOVER TUDO</i>
         </button>
       </div>
     );
   }
 
-  render() {
+  createCardProducts(title, thumbnail, price, id, quantity) {
     return (
-      <div>
-        <MensagemCarrinho />
+      <div key={id}>
+        <div>{this.createRemoveButton(id)}</div>
         <div>
-          <GridProdutos products={this.state.selectedProducts} />
+          <img src={thumbnail} alt={title} />
         </div>
+        <div>{title}</div>
+        <div>{this.createQtdButton(quantity, id)}</div>
+        <div>{price}</div>
       </div>
     );
+  }
+
+  cartTotal() {
+    const { selectedProducts } = this.state;
+    const cartTotal = selectedProducts.reduce((accumulator, currentValue) => {
+      const { price, quantity } = currentValue;
+      const totalValue = parseFloat(accumulator + price * quantity);
+      return totalValue;
+    });
+    localStorage.setItem('cartTotal', cartTotal);
+    return (
+      <div>
+        <p>
+          Total da Compra:
+          {cartTotal}
+        </p>
+      </div>
+    );
+  }
+
+  render() {
+    const { selectedProducts } = this.state;
+    if (selectedProducts && selectedProducts.length !== 0) {
+      return (
+        <div>
+          <div>
+            {selectedProducts.map(
+              ({ title, thumbnail, price, id, quantity }) => {
+                return this.createCardProducts(
+                  title,
+                  thumbnail,
+                  price,
+                  id,
+                  quantity,
+                );
+              },
+            )}
+          </div>
+          {this.cartTotal()}
+        </div>
+      );
+    }
+    return <MensagemCarrinho />;
   }
 }
 
