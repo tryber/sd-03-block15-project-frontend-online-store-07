@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import GridProdutos from '../components/GridProdutos';
 import MensagemCarrinho from '../components/MensagemCarrinho';
 
 export class Cart extends Component {
@@ -52,6 +51,7 @@ export class Cart extends Component {
     const { id } = event.target;
     const items = selectedProducts.map((product) => product.id).indexOf(id);
     selectedProducts.splice(items, 1);
+    localStorage.setItem('products', JSON.stringify([selectedProducts]));
     this.setState({ selectedProducts });
   }
 
