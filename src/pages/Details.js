@@ -19,13 +19,13 @@ export class Details extends Component {
       if (novaQuantidade >= 0 && novaQuantidade < max) {
         return ({ quantidade: novaQuantidade });
       }
-      return ({ quantidade: 0 })
+      return ({ quantidade: 0 });
     });
   }
 
   seletorQuantidade() {
     const estoque = this.props.apiResults.available_quantity;
-    return( 
+    return(
       <div>
         <label htmlFor="quantidade">Quantidade</label>:
         <input
