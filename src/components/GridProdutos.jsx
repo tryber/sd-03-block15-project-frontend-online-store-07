@@ -3,11 +3,11 @@ import Card from './CardProduto';
 
 export class GridProdutos extends Component {
   render() {
-    const { products } = this.props;
+    const { products, onClick } = this.props;
     return (
       <div>
         {products.map((product) => (
-          <Card key={product.id} product={product} />
+          <Card key={product.id} product={product} onClick={onClick} />
         ))}
       </div>
     );
