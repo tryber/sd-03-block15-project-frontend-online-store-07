@@ -1,5 +1,6 @@
 import React from 'react';
 import BarraEsquerda from '../components/BarraEsquerda';
+import { Grid, Container } from '@material-ui/core';
 import { CarLink } from '../components/CarLink';
 import { GridProdutos } from '../components/GridProdutos';
 import BarraPesquisa from '../components/BarraPesquisa';
@@ -31,23 +32,27 @@ class Home extends React.Component {
   render() {
     const { categories, apiResults } = this.state;
     return (
-      <div>
-        <div>
-          <BarraEsquerda categorias={categories} />
-        </div>
-        <div>
-          <BarraPesquisa onClick={this.handleSearchSubmit} />
-        </div>
-        <div>
-          <CarLink />
-        </div>
-        <div>
-          {apiResults.length === 0 ? (
-            <MessagemInicial />
-          ) : (
-            <GridProdutos products={apiResults} />
-          )}
-        </div>
+      <div style={{ flexGrow: 1 }}>
+        <Container>
+          <Grid container spacing={5}>
+            <Grid item xs={3}>
+              <BarraEsquerda categorias={categories} />
+            </Grid>
+            <Grid item xs={6}>
+              <BarraPesquisa onClick={this.handleSearchSubmit} />
+              <div>
+                {apiResults.length === 0 ? (
+                  <MessagemInicial />
+                ) : (
+                  <GridProdutos products={apiResults} />
+                )}
+              </div>
+            </Grid>
+            <Grid item xs={2}>
+              <CarLink />
+            </Grid>
+          </Grid>
+        </Container>
       </div>
     );
   }

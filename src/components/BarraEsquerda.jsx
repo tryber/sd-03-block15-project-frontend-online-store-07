@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
 
 class BarraEsquerda extends Component {
   render() {
@@ -7,7 +8,7 @@ class BarraEsquerda extends Component {
       <div>
         {categorias.map((categoria) => (
           <li key={categoria.id} data-testid="category">
-            {categoria.name}
+            <Button color="primary">{categoria.name}</Button>
           </li>
         ))}
       </div>
