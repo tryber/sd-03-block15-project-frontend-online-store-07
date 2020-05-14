@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Rating from "@material-ui/lab/Rating";
+import Rating from '@material-ui/lab/Rating';
 
 export class FormAvaliacao extends Component {
   constructor() {
@@ -30,7 +30,7 @@ export class FormAvaliacao extends Component {
         <Rating
           precision={0.5}
           value={this.state.nota}
-          onChange={(evt) => { this.evtMapper(evt, 'nota')}}
+          onChange={(evt) => { this.evtMapper(evt, 'nota'); }}
         />
         <textarea
           placeholder="Observações (opcional)"
