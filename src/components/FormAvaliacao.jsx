@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Rating from "@material-ui/lab/Rating";
 
 export class FormAvaliacao extends Component {
   constructor() {
@@ -9,7 +10,6 @@ export class FormAvaliacao extends Component {
       mensagem: '',
     };
     this.evtMapper = this.evtMapper.bind(this);
-    this.setaNota = this.setaNota.bind(this);
   }
 
   evtMapper(event, name) {
@@ -22,11 +22,18 @@ export class FormAvaliacao extends Component {
       <form>
         <legend>Avaliações</legend>
         <input
+          placeholder="e-Mail"
           type="text"
           value={this.state.email}
           onChange={(evt) => this.evtMapper(evt, 'email')}
         />
+        <Rating
+          precision={0.5}
+          value={this.state.nota}
+          onChange={(evt) => { this.evtMapper(evt, 'nota')}}
+        />
         <textarea
+          placeholder="Observações (opcional)"
           value={this.state.mensagem}
           onChange={(evt) => this.evtMapper(evt, 'mensagem')}
         />

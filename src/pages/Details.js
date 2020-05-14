@@ -61,7 +61,7 @@ export class Details extends Component {
         </div>
         <div className="dadosProduto">
           <h3>Especificações técnicas</h3>
-          {attributes.map((att) => <li>{att.name}: {att.value_name}</li>)}
+          {attributes.map((att) => <li key={att.name}>{att.name}: {att.value_name}</li>)}
         </div>
         {this.seletorQuantidade()}
         <FormAvaliacao />
