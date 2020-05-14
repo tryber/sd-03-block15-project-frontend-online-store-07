@@ -25,7 +25,7 @@ export class Details extends Component {
 
   seletorQuantidade() {
     const estoque = this.props.apiResults.available_quantity;
-    return(
+    return (
       <div>
         <label htmlFor="quantidade">Quantidade</label>:
         <input
