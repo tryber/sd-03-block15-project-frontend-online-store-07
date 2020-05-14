@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Cart from './pages/Cart';
+import { Cart } from './pages/Cart';
 
 function App() {
   return (

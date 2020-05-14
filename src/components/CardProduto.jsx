@@ -8,7 +8,7 @@ export class CardProduto extends Component {
   }
 
   addToCart() {
-    console.log(localStorage.products);
+    console.log(localStorage.product);
     const { product } = this.props;
     const cartItems = parseInt(localStorage.getItem('cartItems'), 10) || 0;
     if (!localStorage.products || localStorage.getItem('products') === 'null') {
@@ -24,6 +24,7 @@ export class CardProduto extends Component {
     }
     localStorage.setItem('cartItems', cartItems + 1);
     localStorage.setItem('products', JSON.stringify([...products, product]));
+    localStorage.clear();
   }
 
   render() {
@@ -33,8 +34,8 @@ export class CardProduto extends Component {
       title,
       thumbnail,
       price,
-      available_quantity,
-      shipping: { free_shipping },
+      available_quantity: availableQuantity,
+      shipping: { free_shipping: freeShipping },
     } = product;
     return (
       <div data-testid="product">
@@ -47,9 +48,9 @@ export class CardProduto extends Component {
         </h5>
         <h5>
           Quantidade disponível:
-          {available_quantity}
+          {availableQuantity}
         </h5>
-        {free_shipping === true ? <h6>FRETE GRÁTIS</h6> : <h6>FRETE PAGO</h6>}
+        {freeShipping === true ? <h6>FRETE GRÁTIS</h6> : <h6>FRETE PAGO</h6>}
         <button
           type="button"
           onClick={this.addToCart}
