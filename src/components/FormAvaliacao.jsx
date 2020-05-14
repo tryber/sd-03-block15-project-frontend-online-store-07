@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { Rating } from "@material-ui/lab/Rating";
 
 export class FormAvaliacao extends Component {
   constructor() {
@@ -13,25 +12,25 @@ export class FormAvaliacao extends Component {
     this.setaNota = this.setaNota.bind(this);
   }
 
+    setaNota(valor) {
+      this.setState({ nota: valor });
+    }
+
   evtMapper(event, name) {
     const { value } = event.target;
     this.setState({ [name]: value });
-  }
-
-  setaNota(valor) {
-    this.setState({nota: valor})
   }
 
   render() {
     return (
       <form>
         <legend>Avaliações</legend>
-        <input 
+        <input
           type="text"
           value={this.state.email}
           onChange={(evt) => this.evtMapper(evt, 'email')}
         />
-        <textarea 
+        <textarea
           value={this.state.mensagem}
           onChange={(evt) => this.evtMapper(evt, 'mensagem')}
         />

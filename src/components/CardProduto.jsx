@@ -18,7 +18,7 @@ export class CardProduto extends Component {
         >
           Adicionar ao Carrinho
         </button>
-        <Link to={ { pathname: `/details/${id}`, state: { product }} } >Detalhes</Link>
+        <Link to={ { pathname: `/details/${id}`, state: { product } } }>Detalhes</Link>
       </div>
     );
   }

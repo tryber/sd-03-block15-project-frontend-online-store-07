@@ -8,7 +8,7 @@ export class Details extends Component {
     this.state = {
       quantidade: 0,
       comentarios: null,
-    }
+    };
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.alteraQuantidade = this.alteraQuantidade.bind(this);
   }
@@ -28,7 +28,7 @@ export class Details extends Component {
   }
 
   seletorQuantidade() {
-    const estoque = this.props.location.state.product.available_quantity ;
+    const estoque = this.props.location.state.product.available_quantity;
     return (
       <div>
         <label htmlFor="quantidade">Quantidade</label>:
@@ -48,7 +48,7 @@ export class Details extends Component {
   }
 
   render() {
-    const { location: {state: {product}} } = this.props;
+    const { location: { state: { product } } } = this.props;
     const { price, title, thumbnail, attributes } = product;
     return (
       <div className="detalheProduto">
