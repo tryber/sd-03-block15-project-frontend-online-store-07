@@ -1,11 +1,11 @@
 import React from 'react';
 import BarraEsquerda from '../components/BarraEsquerda';
-import { Grid, Container } from '@material-ui/core';
 import { CarLink } from '../components/CarLink';
 import { GridProdutos } from '../components/GridProdutos';
 import BarraPesquisa from '../components/BarraPesquisa';
 import MessagemInicial from '../components/MessagemInicial';
 import * as api from '../services/api';
+import { Grid, Container } from '@material-ui/core';
 
 class Home extends React.Component {
   constructor() {
@@ -23,9 +23,9 @@ class Home extends React.Component {
       .then((data) => this.setState({ categories: data }));
   }
 
-  handleSearchSubmit(query) {
+  handleSearchSubmit(category = '', query) {
     api
-      .getProductsFromCategoryAndQuery('', query)
+      .getProductsFromCategoryAndQuery(category, query)
       .then((data) => this.setState({ apiResults: data.results }));
   }
 
