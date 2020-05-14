@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import FormAvaliacao from '../components/FormAvaliacao';
 
 export class Details extends Component {
   constructor(props) {
     super(props);
-    this.state = { quantidade: 0 };
+    this.state = {
+      quantidade: 0,
+      comentarios: null,
+    }
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.alteraQuantidade = this.alteraQuantidade.bind(this);
   }
@@ -15,16 +19,16 @@ export class Details extends Component {
 
   alteraQuantidade(soma, max) {
     this.setState((currentState) => {
-      const novaQuantidade = (soma ? currentState.quantidade + 1 : currentState.quantidade - 1);
-      if (novaQuantidade >= 0 && novaQuantidade < max) {
-        return ({ quantidade: novaQuantidade });
+      const novaQuant = (soma ? currentState.quantidade + 1 : currentState.quantidade - 1);
+      if (novaQuant >= 0 && novaQuant <= max) {
+        return ({ quantidade: novaQuant });
       }
       return ({ quantidade: 0 });
     });
   }
 
   seletorQuantidade() {
-    const estoque = this.props.apiResults.available_quantity;
+    const estoque = this.props.location.state.product.available_quantity ;
     return (
       <div>
         <label htmlFor="quantidade">Quantidade</label>:
@@ -38,13 +42,14 @@ export class Details extends Component {
         />
         <button onClick={() => this.alteraQuantidade(false, estoque)}>-</button>
         <button onClick={() => this.alteraQuantidade(true, estoque)}>+</button>
-        <button>Adicionar ao carrinho</button>
+        <button data-testid="product-detail-add-to-cart">Adicionar ao carrinho</button>
       </div>
     );
   }
 
   render() {
-    const { price, title, thumbnail, attributes } = this.props.apiResults;
+    const { location: {state: {product}} } = this.props;
+    const { price, title, thumbnail, attributes } = product;
     return (
       <div className="detalheProduto">
         <div className="cabecalhoProduto">
@@ -59,6 +64,7 @@ export class Details extends Component {
           {attributes.map((att) => <li>{att.name}: {att.value_name}</li>)}
         </div>
         {this.seletorQuantidade()}
+        <FormAvaliacao />
       </div>
     );
   }
