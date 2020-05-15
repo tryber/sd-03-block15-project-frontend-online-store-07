@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Grid, Container } from '@material-ui/core';
 import BarraEsquerda from '../components/BarraEsquerda';
+import { CarLink } from '../components/CarLink';
 import { GridProdutos } from '../components/GridProdutos';
 import BarraPesquisa from '../components/BarraPesquisa';
 import MessagemInicial from '../components/MessagemInicial';
@@ -12,67 +13,69 @@ class Home extends React.Component {
     this.state = {
       apiResults: [],
       categories: [],
-      selectedItems: [],
+      selectedCategory: '',
+      query: '',
+      callAPI: false,
     };
-
-    this.addToCart = this.addToCart.bind(this);
-    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.callApi = this.callApi.bind(this);
+    this.categoryChange = this.categoryChange.bind(this);
   }
 
   componentDidMount() {
-    return api
-      .getCategories()
+    return api.getCategories()
       .then((data) => this.setState({ categories: data }));
   }
 
-  handleSearchSubmit(query) {
-    api
-      .getProductsFromCategoryAndQuery('', query)
-      .then((data) => this.setState({ apiResults: data.results }));
-  }
-
-  addToCart(title, price, id, thumbnail, availableQuantity) {
-    const { selectedItems } = this.state;
-    const itemIndex = selectedItems.findIndex((item) => item.id === id);
-    if (itemIndex !== -1) {
-      const updatedCart = selectedItems;
-      updatedCart[itemIndex].quantity += 1;
-      this.setState({ selectedItems: updatedCart });
-    } else {
-      this.setState({
-        selectedItems: [
-          ...selectedItems,
-          { title, id, price, thumbnail, availableQuantity, quantity: 1 },
-        ],
-      });
+  componentDidUpdate() {
+    const { callAPI, selectedCategory, query } = this.state;
+    if (callAPI) {
+      api.getProductsFromCategoryAndQuery(selectedCategory, query)
+        .then((data) => this.setState({
+          apiResults: data.results,
+          callAPI: false,
+        }));
     }
   }
 
+  callApi(query) {
+    this.setState({ callAPI: true, query });
+  }
+
+  categoryChange(value) {
+    this.setState({
+      selectedCategory: value,
+      callAPI: true,
+    });
+  }
+
   render() {
-    const { categories, apiResults, selectedItems } = this.state;
+    const { categories, apiResults, selectedCategory } = this.state;
     return (
-      <div>
-        <div>
-          <BarraEsquerda categorias={categories} />
-        </div>
-        <div>
-          <BarraPesquisa onClick={this.handleSearchSubmit} />
-        </div>
-        <div>
-          <Link
-            data-testid="shopping-cart-button"
-            to={{ pathname: '/cart', state: { selectedItems } }}
-          >
-            <i className="fas fa-shopping-cart" />
-          </Link>
-        </div>
-        <div>
-          {apiResults.length === 0 ? (
-            <MessagemInicial />
-          ) : (
-            <GridProdutos products={apiResults} addToCart={this.addToCart} />
-          )}
-        </div>
+      <div style={{ flexGrow: 1 }}>
+        <Container>
+          <Grid container spacing={5}>
+            <Grid item xs={3}>
+              <BarraEsquerda
+                categorias={categories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={(e) => this.categoryChange(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <BarraPesquisa onClick={this.callApi} />
+              <div>
+                {apiResults.length === 0 ? (
+                  <MessagemInicial />
+                ) : (
+                  <GridProdutos products={apiResults} />
+                )}
+              </div>
+            </Grid>
+            <Grid item xs={2}>
+              <CarLink />
+            </Grid>
+          </Grid>
+        </Container>
       </div>
     );
   }
