@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { Rating } from '@material-ui/lab';
+import Rating from '@material-ui/lab/Rating';
+import '../pages/Details.css';
 
 export class FormAvaliacao extends Component {
   constructor() {
     super();
     this.state = {
       email: '',
-      nota: 3,
+      nota: 0,
       mensagem: '',
+      reviews: [],
     };
     this.evtMapper = this.evtMapper.bind(this);
+    this.insertReview = this.insertReview.bind(this);
   }
 
   evtMapper(event, name) {
@@ -17,29 +20,61 @@ export class FormAvaliacao extends Component {
     this.setState({ [name]: value });
   }
 
-  render() {
+  insertReview(evt) {
+    const { email, nota, mensagem, reviews } = this.state;
+    evt.preventDefault();
+    this.setState(
+      {
+        reviews: [...reviews, { email, nota, mensagem }],
+        email: '',
+        nota: 0,
+        mensagem: '',
+      });
+  }
+
+  secaoAvaliacoes() {
+    const { reviews } = this.state;
     return (
-      <form>
-        <legend>Avaliações</legend>
+      <div>
+        <h2>Avaliações</h2>
+        {reviews.map((ava) => (
+          <ul className="avaliacao">
+            <li>Usuário: {ava.email}</li>
+            <li>Nota: {ava.nota}</li>
+            <li>Mensagem: {ava.mensagem}</li>
+          </ul>
+        ))}
+      </div>
+    );
+  }
+
+  render() {
+    const { email, nota, mensagem } = this.state;
+    return (
+      <form className="formReview" onSubmit={this.insertReview} >
+        <legend>Avalie este produto</legend>
         <input
-          placeholder="e-Mail"
-          type="text"
-          value={this.state.email}
+          placeholder="e-mail"
+          type="email"
+          required
+          value={email}
           onChange={(evt) => this.evtMapper(evt, 'email')}
         />
         <Rating
+          name="nota"
           precision={0.5}
-          value={this.state.nota}
-          onChange={(evt) => {
-            this.evtMapper(evt, 'nota');
-          }}
+          required
+          value={nota}
+          onChange={(evt) => { this.evtMapper(evt, 'nota'); }}
         />
         <textarea
           data-testid="product-detail-evaluation"
           placeholder="Observações (opcional)"
-          value={this.state.mensagem}
+          value={mensagem}
           onChange={(evt) => this.evtMapper(evt, 'mensagem')}
         />
+        <button type="submit">Enviar</button>
+        {this.secaoAvaliacoes()}
       </form>
     );
   }
