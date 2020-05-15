@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import FormAvaliacao from '../components/FormAvaliacao';
+import LocalShippingIcon from "@material-ui/icons/LocalShipping";
+import './Details.css';
 
 export class Details extends Component {
   constructor(props) {
@@ -8,40 +10,80 @@ export class Details extends Component {
     this.state = {
       quantidade: 0,
       comentarios: null,
+      disableMinBtn: true,
+      disableMaxBtn: false,
     };
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
-    this.alteraQuantidade = this.alteraQuantidade.bind(this);
+    this.adicionarUm = this.adicionarUm.bind(this);
+    this.diminuirUm = this.diminuirUm.bind(this);
   }
 
   atualizaQuantidade(event) {
     this.setState({ quantidade: event.target.value });
   }
 
-  alteraQuantidade(soma, max) {
-    this.setState((currentState) => {
-      const novaQuant = (soma ? currentState.quantidade + 1 : currentState.quantidade - 1);
-      if (novaQuant >= 0 && novaQuant <= max) {
-        return ({ quantidade: novaQuant });
-      }
-      return ({ quantidade: 0 });
-    });
+  adicionarUm(max) {
+    this.setState({ disableMinBtn: false });
+    const novaQuant = this.state.quantidade + 1;
+    this.setState({ quantidade: novaQuant});
+    if (novaQuant === max ) {
+      this.setState({ disableMaxBtn: true });
+    }
+  }
+
+  diminuirUm() {
+    this.setState({ disableMaxBtn: false });
+    const novaQuant = this.state.quantidade - 1;
+    this.setState({ quantidade: novaQuant});
+    if (novaQuant <= 0 ) {
+      this.setState({ disableMinBtn: true });
+    }
+  }
+
+  // Código antigo (uma função no lugar de duas, mas bloated AF e ainda com bugs)
+  // alteraQuantidade(soma, max) {
+  //   this.setState((currentState) => {
+  //     const novaQuant = (soma ? currentState.quantidade + 1 : currentState.quantidade - 1);
+  //     if (novaQuant > max) {
+  //       return ({
+  //         disableMaxBtn: true,
+  //         disableMinBtn: false});
+  //       }
+  //     if (novaQuant < 1) {
+  //       return ({
+  //         disableMaxBtn: false,
+  //         disableMinBtn: true});
+  //     }
+  //     return({quantidade: novaQuant});
+  //   });
+  // }
+
+  freteGratis() {
+    if (this.props.location.state.product.shipping.free_shipping)
+      return (<p><LocalShippingIcon />Frete grátis</p>)
   }
 
   seletorQuantidade() {
-    const estoque = this.props.location.state.product.available_quantity;
+    const estoqueDisponivel = this.props.location.state.product.available_quantity;
     return (
       <div>
-        <label htmlFor="quantidade">Quantidade</label>:
+        <label htmlFor="quantidade">Quantidade: </label>
         <input
           name="quantidade"
           type="number"
           min="0"
-          max={estoque}
+          max={estoqueDisponivel}
           value={this.state.quantidade}
           onChange={this.atualizaQuantidade}
         />
-        <button onClick={() => this.alteraQuantidade(false, estoque)}>-</button>
-        <button onClick={() => this.alteraQuantidade(true, estoque)}>+</button>
+        <button
+          disabled={this.state.disableMinBtn}
+          onClick={() => this.diminuirUm(estoqueDisponivel)}>-
+        </button>
+        <button
+          disabled={this.state.disableMaxBtn}
+          onClick={() => this.adicionarUm(estoqueDisponivel)}>+
+        </button>
         <button data-testid="product-detail-add-to-cart">Adicionar ao carrinho</button>
       </div>
     );
@@ -51,17 +93,19 @@ export class Details extends Component {
     const { location: { state: { product } } } = this.props;
     const { price, title, thumbnail, attributes } = product;
     return (
-      <div className="detalheProduto">
+      <div className="telaDetalhes">
         <div className="cabecalhoProduto">
           <Link to="/">Voltar</Link>
-          <h3 data-testid="product-detail-name">{title} - R$ {price}</h3>
+          <h2 data-testid="product-detail-name">{title} - R$ {price}</h2> {this.freteGratis()}
         </div>
-        <div className="imagemDetalhe">
-          <img src={thumbnail} alt="" />
-        </div>
-        <div className="dadosProduto">
-          <h3>Especificações técnicas</h3>
-          {attributes.map((att) => <li key={att.name}>{att.name}: {att.value_name}</li>)}
+        <div className="detalhesProduto">
+          <div className="imagemDetalhe">
+            <img src={thumbnail} alt={`Imagem de ${title}`} height="350px" />
+          </div>
+          <div className="especificProduto">
+            <h3>Especificações técnicas</h3>
+            {attributes.map((att) => <li key={att.name}>{att.name}: {att.value_name}</li>)}
+          </div>
         </div>
         {this.seletorQuantidade()}
         <FormAvaliacao />
