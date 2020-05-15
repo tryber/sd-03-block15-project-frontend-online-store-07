@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 
 class BarraEsquerda extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { selectedCategory: '' };
-  }
-
   render() {
     const { categorias, onCategoryChange, selectedCategory } = this.props;
     return (
       <div>
         {categorias.map((categoria) => (
-          <li key={categoria.id} data-testid="category">
+          <li key={categoria.id}>
             <input
+              data-testid="category"
               type="radio"
               id={categoria.id}
               value={categoria.id}
