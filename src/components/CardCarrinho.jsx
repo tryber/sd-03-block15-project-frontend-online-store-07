@@ -36,17 +36,6 @@ export class CardCarrinho extends Component {
     const { quantity } = this.state;
     return (
       <div>
-        <label htmlFor="quantity">
-          Quantidade
-          <input
-            type="number"
-            id="quantity"
-            min="0"
-            max={availableQuantity}
-            value={quantity}
-            onChange={this.updateQuantity}
-          />
-        </label>
         <button
           type="button"
           data-testid="product-increase-quantity"
@@ -69,13 +58,7 @@ export class CardCarrinho extends Component {
   render() {
     const { quantity } = this.state;
     const { product } = this.props;
-    const {
-      title,
-      thumbnail,
-      price,
-      id,
-      availableQuantity,
-    } = product;
+    const { title, thumbnail, price, id, availableQuantity } = product;
     return (
       <div>
         <p>{id}</p>
