@@ -55,13 +55,13 @@ class Cart extends React.Component {
     );
   }
 
-  priceTotal() {
-    return (
-      <div>
-        <h2>Valor total:</h2>
-      </div>
-    );
-  }
+  // priceTotal() {
+  //   return (
+  //     <div>
+  //       <h2>Valor total:</h2>
+  //     </div>
+  //   );
+  // }
 
   render() {
     const { history } = this.props;
@@ -77,7 +77,7 @@ class Cart extends React.Component {
               <CardCarrinho key={product.id} product={product} />
             ))}
           </div>
-          <div>{this.priceTotal()}</div>
+          {/* <div>{this.priceTotal()}</div> */}
           <CheckoutCartButton />
         </div>
       );

@@ -5,7 +5,7 @@ export class CardProduto extends Component {
   constructor(props) {
     super(props);
 
-    this.addToCart = this.addToCart.bind(this);
+    this.addToCartButton = this.addToCartButton.bind(this);
   }
 
   addToCartButton() {
