@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Container } from '@material-ui/core';
 import BarraEsquerda from '../components/BarraEsquerda';
-import { CarLink } from '../components/CarLink';
 import { GridProdutos } from '../components/GridProdutos';
 import BarraPesquisa from '../components/BarraPesquisa';
 import MessagemInicial from '../components/MessagemInicial';
