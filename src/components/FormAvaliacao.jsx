@@ -70,6 +70,7 @@ export class FormAvaliacao extends Component {
           onChange={(evt) => { this.evtMapper(evt, 'nota'); }}
         />
         <textarea
+          data-testid="product-detail-evaluation"
           placeholder="Observações (opcional)"
           value={mensagem}
           onChange={(evt) => this.evtMapper(evt, 'mensagem')}

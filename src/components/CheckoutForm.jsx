@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Grid, GridList } from '@material-ui/core/';
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -98,11 +99,17 @@ class CheckoutForm extends Component {
     const { redirect } = this.state;
     if (redirect) return <Redirect to="/" />;
     return (
-      <div>
+      <div style={{ flexGrow: 1 }}>
         <form onSubmit={this.handleSubmit}>
-          {this.payments()}
-          {this.personalInfo()}
-          {this.adressInfo()}
+          <GridList cellHeight={90} cols={1}>
+            {this.payments()}
+            <Grid item xs={8}>
+              {this.personalInfo()}
+            </Grid>
+            <Grid item xs={6}>
+              {this.adressInfo()}
+            </Grid>
+          </GridList>
           <div>
             <button type="submit">Finalizar Compra</button>
           </div>
