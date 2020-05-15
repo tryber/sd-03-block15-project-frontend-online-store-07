@@ -36,7 +36,8 @@ class Home extends React.Component {
       const updatedCart = selectedItems;
       updatedCart[itemIndex].quantity += 1;
       this.setState({ selectedItems: updatedCart });
-      localStorage.setItem('cart_products', JSON.stringify(updatedCart));
+      // localStorage.setItem('cart_products', JSON.stringify(updatedCart));
+      // console.log(localStorage);
     } else {
       this.setState({
         selectedItems: [
@@ -44,7 +45,8 @@ class Home extends React.Component {
           { title, id, price, thumbnail, availableQuantity, quantity: 1 },
         ],
       });
-      localStorage.setItem('cart_products', JSON.stringify(selectedItems));
+      // localStorage.setItem('cart_products', JSON.stringify(selectedItems));
+      // console.log(localStorage);
     }
   }
 
