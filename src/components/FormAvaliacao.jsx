@@ -51,22 +51,19 @@ export class FormAvaliacao extends Component {
   render() {
     const { email, nota, mensagem } = this.state;
     return (
-      <form
-        className="formReview"
-        onSubmit={this.insertReview}
-      >
+      <form className="formReview" onSubmit={this.insertReview} >
         <legend>Avalie este produto</legend>
         <input
           placeholder="e-mail"
           type="email"
-          required={true}
+          required
           value={email}
           onChange={(evt) => this.evtMapper(evt, 'email')}
         />
         <Rating
           name="nota"
           precision={0.5}
-          required={true}
+          required
           value={nota}
           onChange={(evt) => { this.evtMapper(evt, 'nota'); }}
         />
