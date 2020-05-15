@@ -22,8 +22,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    return api
-      .getCategories()
+    return api.getCategories()
       .then((data) => this.setState({ categories: data }));
   }
 
