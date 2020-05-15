@@ -12,7 +12,7 @@ class Home extends React.Component {
     this.state = {
       apiResults: [],
       categories: [],
-      cartItemsQuantity: 0,
+      selectedItems: [],
     };
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
   }
@@ -29,8 +29,25 @@ class Home extends React.Component {
       .then((data) => this.setState({ apiResults: data.results }));
   }
 
+  addToCart(title, price, id, thumbnail, availableQuantity) {
+    const { selectedItems } = this.state;
+    const itemIndex = selectedItems.findIndex((item) => item.id === id);
+    if (itemIndex !== -1) {
+      const updatedCart = selectedItems;
+      updatedCart[itemIndex].quantity += 1;
+      this.setState({ selectedItems: updatedCart });
+    } else {
+      this.setState({
+        selectedItems: [
+          ...selectedItems,
+          { title, id, price, thumbnail, availableQuantity, quantity: 1 },
+        ],
+      });
+    }
+  }
+
   render() {
-    const { categories, apiResults, cartItemsQuantity } = this.state;
+    const { categories, apiResults, selectedItemsQuantity } = this.state;
     return (
       <div>
         <div>
@@ -41,13 +58,13 @@ class Home extends React.Component {
         </div>
         <div>
           <CarLink />
-          <span>{cartItemsQuantity}</span>
+          <span>{selectedItemsQuantity}</span>
         </div>
         <div>
           {apiResults.length === 0 ? (
             <MessagemInicial />
           ) : (
-            <GridProdutos products={apiResults} onClick={this.addToCart} />
+            <GridProdutos products={apiResults} addToCart={this.addToCart} />
           )}
         </div>
       </div>
