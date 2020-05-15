@@ -46,12 +46,10 @@ export class CardProduto extends Component {
         <h5>{id}</h5>
         <img src={thumbnail} alt={title} />
         <h5>
-          Preço: R$
-          {price.toFixed(2)}
+          {`Preço: R$ ${price.toFixed(2)}`}
         </h5>
         <h5>
-          Quantidade disponível:
-          {availableQuantity}
+          {`Quantidade disponível: ${availableQuantity}`}
         </h5>
         {freeShipping && <h6 data-testid="free-shipping">FRETE GRÁTIS</h6>}
         {this.addToCartButton()}
