@@ -1,5 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
 import { Grid, Container } from '@material-ui/core';
+=======
+>>>>>>> parent of ce61d63... carrinho de compras funcional
 import BarraEsquerda from '../components/BarraEsquerda';
 import { CarLink } from '../components/CarLink';
 import { GridProdutos } from '../components/GridProdutos';
@@ -17,8 +20,12 @@ class Home extends React.Component {
       query: '',
       callAPI: false,
     };
+<<<<<<< HEAD
     this.callApi = this.callApi.bind(this);
     this.categoryChange = this.categoryChange.bind(this);
+=======
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+>>>>>>> parent of ce61d63... carrinho de compras funcional
   }
 
   componentDidMount() {
@@ -37,6 +44,7 @@ class Home extends React.Component {
     }
   }
 
+<<<<<<< HEAD
   callApi(query) {
     this.setState({ callAPI: true, query });
   }
@@ -76,6 +84,50 @@ class Home extends React.Component {
             </Grid>
           </Grid>
         </Container>
+=======
+  addToCart(title, price, id, thumbnail, availableQuantity) {
+    const { selectedItems } = this.state;
+    const itemIndex = selectedItems.findIndex((item) => item.id === id);
+    if (itemIndex !== -1) {
+      const updatedCart = selectedItems;
+      updatedCart[itemIndex].quantity += 1;
+      this.setState({ selectedItems: updatedCart });
+      // localStorage.setItem('cart_products', JSON.stringify(updatedCart));
+      // console.log(localStorage);
+    } else {
+      this.setState({
+        selectedItems: [
+          ...selectedItems,
+          { title, id, price, thumbnail, availableQuantity, quantity: 1 },
+        ],
+      });
+      // localStorage.setItem('cart_products', JSON.stringify(selectedItems));
+      // console.log(localStorage);
+    }
+  }
+
+  render() {
+    const { categories, apiResults, selectedItemsQuantity } = this.state;
+    return (
+      <div>
+        <div>
+          <BarraEsquerda categorias={categories} />
+        </div>
+        <div>
+          <BarraPesquisa onClick={this.handleSearchSubmit} />
+        </div>
+        <div>
+          <CarLink />
+          <span>{selectedItemsQuantity}</span>
+        </div>
+        <div>
+          {apiResults.length === 0 ? (
+            <MessagemInicial />
+          ) : (
+            <GridProdutos products={apiResults} addToCart={this.addToCart} />
+          )}
+        </div>
+>>>>>>> parent of ce61d63... carrinho de compras funcional
       </div>
     );
   }

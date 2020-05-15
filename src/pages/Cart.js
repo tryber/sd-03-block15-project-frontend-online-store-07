@@ -19,12 +19,22 @@ class Cart extends React.Component {
     this.mountCart();
   }
 
+  componentDidUpdate() {
+    const { cartProducts } = this.state;
+    localStorage.setItem('cart_products', JSON.stringify(cartProducts));
+    if (cartProducts) {
+      const totalCartItems = cartProducts.reduce((acc, cur) => {
+        const quantity = parseInt(cur.quantity, 10);
+        return acc + quantity;
+      }, 0);
+      localStorage.setItem('totalCartItems', totalCartItems);
+    }
+  }
+
   mountCart() {
-    const { location } = this.props;
-    const { state } = location;
-    const { selectedItems } = state;
-    if (selectedItems !== null) {
-      this.setState({ cartProducts: [...selectedItems] });
+    const products = JSON.parse(localStorage.getItem('cart_products'));
+    if (products !== null) {
+      this.setState({ cartProducts: products });
     }
   }
 
@@ -49,6 +59,14 @@ class Cart extends React.Component {
     );
   }
 
+  // priceTotal() {
+  //   return (
+  //     <div>
+  //       <h2>Valor total:</h2>
+  //     </div>
+  //   );
+  // }
+
   render() {
     const { history } = this.props;
     const { cartProducts, isShouldRedirect, redirectToPath } = this.state;
@@ -63,6 +81,7 @@ class Cart extends React.Component {
               <CardCarrinho key={product.id} product={product} />
             ))}
           </div>
+          {/* <div>{this.priceTotal()}</div> */}
           <CheckoutCartButton />
         </div>
       );

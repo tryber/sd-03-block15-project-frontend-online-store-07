@@ -10,6 +10,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Switch>
+          <Route exact path="/" component={Home} />
           <Route exact path="/cart" component={Cart} />
           <Route
             exact
@@ -17,7 +18,6 @@ function App() {
             render={(props) => <Details {...props} />}
           />
           <Route exact path="/checkout" component={Checkout} />
-          <Route exact path="/" component={Home} />
         </Switch>
       </BrowserRouter>
     </div>
