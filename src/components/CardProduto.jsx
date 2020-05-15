@@ -23,7 +23,9 @@ export class CardProduto extends Component {
         className="btn btn-link"
         value="Adicionar ao Carrinho"
         type="button"
-        onClick={() => addToCart(title, price, id, thumbnail, availableQuantity)}
+        onClick={() =>
+          addToCart(title, price, id, thumbnail, availableQuantity)
+        }
       >
         Adicionar ao Carrinho
       </button>
@@ -53,11 +55,7 @@ export class CardProduto extends Component {
           Quantidade disponível:
           {availableQuantity}
         </h5>
-        {freeShipping === true ? (
-          <h6 data-testid="free-shipping">FRETE GRÁTIS</h6>
-        ) : (
-          <h6>FRETE PAGO</h6>
-        )}
+        {freeShipping && <h6 data-testid="free-shipping">FRETE GRÁTIS</h6>}
         {this.addToCartButton()}
         <Link to={{ pathname: `/details/${id}`, state: { product } }}>
           Detalhes

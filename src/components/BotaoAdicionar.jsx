@@ -7,9 +7,11 @@ export class BotaoAdicionar extends Component {
     this.addToCart = this.addToCart.bind(this);
   }
 
-  addToCart(product) {
+  addToCart() {
+    const { products } = this.props;
     console.log(localStorage.products);
-    const cartItemsTotal = parseInt(localStorage.getItem('cartItemsTotal'), 10) || 0;
+    const cartItemsTotal =
+      parseInt(localStorage.getItem('cartItemsTotal'), 10) || 0;
     if (!localStorage.products || localStorage.getItem('products') === 'null') {
       localStorage.setItem('cartItemsTotal', cartItemsTotal + 1);
       localStorage.setItem('products', JSON.stringify([product]));

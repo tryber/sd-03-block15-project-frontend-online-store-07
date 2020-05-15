@@ -16,10 +16,7 @@ class Cart extends React.Component {
   }
 
   componentDidMount() {
-    const products = JSON.parse(localStorage.getItem('cart_products'));
-    if (products !== null) {
-      this.setState({ cartProducts: products });
-    }
+    this.mountCart();
   }
 
   componentDidUpdate() {
@@ -31,6 +28,13 @@ class Cart extends React.Component {
         return acc + quantity;
       }, 0);
       localStorage.setItem('totalCartItems', totalCartItems);
+    }
+  }
+
+  mountCart() {
+    const products = JSON.parse(localStorage.getItem('cart_products'));
+    if (products !== null) {
+      this.setState({ cartProducts: products });
     }
   }
 
