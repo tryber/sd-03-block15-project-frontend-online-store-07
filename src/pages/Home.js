@@ -71,20 +71,13 @@ class Home extends React.Component {
   }
 
   render() {
-    const {
-      categories,
-      apiResults,
-      selectedCategory,
-      selectedItems,
-    } = this.state;
+    const { categories, apiResults, selectedCategory, selectedItems } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
           <Grid container spacing={5}>
             <Grid item xs={3}>
-              <BarraEsquerda
-                categorias={categories}
-                selectedCategory={selectedCategory}
+              <BarraEsquerda categorias={categories} selectedCategory={selectedCategory}
                 onCategoryChange={(e) => this.categoryChange(e.target.value)}
               />
             </Grid>
@@ -94,10 +87,7 @@ class Home extends React.Component {
                 {apiResults.length === 0 ? (
                   <MessagemInicial />
                 ) : (
-                  <GridProdutos
-                    products={apiResults}
-                    addToCart={this.addToCart}
-                  />
+                  <GridProdutos products={apiResults} addToCart={this.addToCart} />
                 )}
               </div>
             </Grid>
