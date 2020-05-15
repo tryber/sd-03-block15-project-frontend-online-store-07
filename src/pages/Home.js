@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Grid, Container } from '@material-ui/core';
+import { CarLink } from '../components/CarLink';
 import BarraEsquerda from '../components/BarraEsquerda';
 import { GridProdutos } from '../components/GridProdutos';
 import BarraPesquisa from '../components/BarraPesquisa';
@@ -102,12 +102,7 @@ class Home extends React.Component {
               </div>
             </Grid>
             <Grid item xs={2}>
-              <Link
-                data-testid="shopping-cart-button"
-                to={{ pathname: '/cart', state: { selectedItems } }}
-              >
-                <i className="fas fa-shopping-cart" />
-              </Link>
+              <CarLink params={{ pathname: '/cart', state: { selectedItems } }} />
             </Grid>
           </Grid>
         </Container>
