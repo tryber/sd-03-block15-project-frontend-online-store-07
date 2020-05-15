@@ -17,8 +17,8 @@ export class CardCarrinho extends Component {
         <div>
           <img src={thumbnail} alt={title} />
         </div>
-        <div data-testid="shopping-products-product-name">{title}</div>
-        <div data-testid="shopping-products-product-quantity">{quantity}</div>
+        <div data-testid="shopping-cart-product-name">{title}</div>
+        <div data-testid="shopping-cart-product-quantity">{quantity}</div>
         <div>
           Quantidade disponível:
           {availableQuantity}
