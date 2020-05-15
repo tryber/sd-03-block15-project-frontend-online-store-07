@@ -48,6 +48,7 @@ export class CardCarrinho extends Component {
           type="button"
           data-testid="product-decrease-quantity"
           onClick={() => this.handleQuantity(false, availableQuantity)}
+          disabled={quantity === 0}
         >
           -
         </button>

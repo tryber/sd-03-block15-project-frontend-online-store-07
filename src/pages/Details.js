@@ -40,24 +40,6 @@ export class Details extends Component {
     }
   }
 
-  // Código antigo (uma função no lugar de duas, mas bloated AF e ainda com bugs)
-  // alteraQuantidade(soma, max) {
-  //   this.setState((currentState) => {
-  //     const novaQuant = (soma ? currentState.quantidade + 1 : currentState.quantidade - 1);
-  //     if (novaQuant > max) {
-  //       return ({
-  //         disableMaxBtn: true,
-  //         disableMinBtn: false});
-  //       }
-  //     if (novaQuant < 1) {
-  //       return ({
-  //         disableMaxBtn: false,
-  //         disableMinBtn: true});
-  //     }
-  //     return({quantidade: novaQuant});
-  //   });
-  // }
-
   freteGratis() {
     if (this.props.location.state.product.shipping.free_shipping) {
       return (<p><LocalShippingIcon />Frete grátis</p>);

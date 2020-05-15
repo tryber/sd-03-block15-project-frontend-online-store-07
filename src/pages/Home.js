@@ -35,10 +35,12 @@ class Home extends React.Component {
     if (callAPI) {
       api
         .getProductsFromCategoryAndQuery(selectedCategory, query)
-        .then((data) => this.setState({
-          apiResults: data.results,
-          callAPI: false,
-        }));
+        .then((data) =>
+          this.setState({
+            apiResults: data.results,
+            callAPI: false,
+          }),
+        );
     }
   }
 
@@ -68,11 +70,15 @@ class Home extends React.Component {
         ],
       });
     }
-    console.log(selectedItems);
   }
 
   render() {
-    const { categories, apiResults, selectedCategory, selectedItems } = this.state;
+    const {
+      categories,
+      apiResults,
+      selectedCategory,
+      selectedItems,
+    } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
@@ -90,12 +96,17 @@ class Home extends React.Component {
                 {apiResults.length === 0 ? (
                   <MessagemInicial />
                 ) : (
-                  <GridProdutos products={apiResults} addToCart={this.addToCart} />
+                  <GridProdutos
+                    products={apiResults}
+                    addToCart={this.addToCart}
+                  />
                 )}
               </div>
             </Grid>
             <Grid item xs={2}>
-              <CarLink params={{ pathname: '/cart', state: { selectedItems } }} />
+              <CarLink
+                params={{ pathname: '/cart', state: { selectedItems } }}
+              />
             </Grid>
           </Grid>
         </Container>
