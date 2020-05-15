@@ -4,11 +4,36 @@ export class CardCarrinho extends Component {
   constructor(props) {
     super(props);
 
+    const { product } = this.props;
+    const { quantity } = product;
+
+    this.state = { quantity };
+
     this.quantityButton = this.quantityButton.bind(this);
+    this.updateQuantity = this.updateQuantity.bind(this);
+    this.handleQuantity = this.handleQuantity.bind(this);
+  }
+
+  updateQuantity(event) {
+    this.setState({ quantity: event.target.value });
+  }
+
+  handleQuantity(sum, max) {
+    this.setState((currentState) => {
+      const updatedQuantity = sum
+        ? currentState.quantity + 1
+        : currentState.quantity - 1;
+      if (updatedQuantity >= 0 && updatedQuantity <= max) {
+        return { quantity: updatedQuantity };
+      }
+      return { quantity: 0 };
+    });
   }
 
   quantityButton() {
-    const { stock, quantity, onChange, eventHandler, event } = this.props;
+    const { product } = this.props;
+    const { availableQuantity } = product;
+    const { quantity } = this.state;
     return (
       <div>
         <label htmlFor="quantity">
@@ -17,37 +42,38 @@ export class CardCarrinho extends Component {
             type="number"
             id="quantity"
             min="0"
-            max={stock}
+            max={availableQuantity}
             value={quantity}
-            onChange={onChange}
+            onChange={this.updateQuantity}
           />
         </label>
         <button
           type="button"
           data-testid="product-increase-quantity"
-          onClick={() => eventHandler(event)}
+          onClick={() => this.handleQuantity(true, availableQuantity)}
+          disabled={quantity === availableQuantity}
         >
-          -
+          +
         </button>
         <button
           type="button"
-          data-testid="product-decreate-quantity"
-          onClick={() => this.eventHandler(event)}
+          data-testid="product-decrease-quantity"
+          onClick={() => this.handleQuantity(false, availableQuantity)}
         >
-          +
+          -
         </button>
       </div>
     );
   }
 
   render() {
+    const { quantity } = this.state;
     const { product } = this.props;
     const {
       title,
       thumbnail,
       price,
       id,
-      quantity,
       availableQuantity,
     } = product;
     return (
