@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Container } from '@material-ui/core';
-import { GridProdutos } from '../components/GridProdutos';
+import { GridCheckout } from '../components/GridCheckout';
 import CheckoutForm from '../components/CheckoutForm';
 
 class Checkout extends Component {
@@ -18,7 +18,8 @@ class Checkout extends Component {
 
   render() {
     const { falseProducts } = this.state;
-    console.log(falseProducts);
+    const { products } = this.props.location.state;
+    console.log(products);
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
@@ -26,7 +27,7 @@ class Checkout extends Component {
             <h1>Finalizar Compra</h1>
           </Grid>
           <Grid item xs={12}>
-            <GridProdutos products={falseProducts} />
+            <GridCheckout products={products} />
           </Grid>
           <Grid item xs={12}>
             <CheckoutForm />
