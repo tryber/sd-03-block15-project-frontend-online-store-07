@@ -1,6 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import BarraEsquerda from '../components/BarraEsquerda';
-import { CarLink } from '../components/CarLink';
 import { GridProdutos } from '../components/GridProdutos';
 import BarraPesquisa from '../components/BarraPesquisa';
 import MessagemInicial from '../components/MessagemInicial';
@@ -14,6 +14,8 @@ class Home extends React.Component {
       categories: [],
       selectedItems: [],
     };
+
+    this.addToCart = this.addToCart.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
   }
 
@@ -36,8 +38,6 @@ class Home extends React.Component {
       const updatedCart = selectedItems;
       updatedCart[itemIndex].quantity += 1;
       this.setState({ selectedItems: updatedCart });
-      // localStorage.setItem('cart_products', JSON.stringify(updatedCart));
-      // console.log(localStorage);
     } else {
       this.setState({
         selectedItems: [
@@ -45,13 +45,16 @@ class Home extends React.Component {
           { title, id, price, thumbnail, availableQuantity, quantity: 1 },
         ],
       });
-      // localStorage.setItem('cart_products', JSON.stringify(selectedItems));
-      // console.log(localStorage);
     }
   }
 
   render() {
-    const { categories, apiResults, selectedItemsQuantity } = this.state;
+    const {
+      categories,
+      apiResults,
+      selectedItemsQuantity,
+      selectedItems,
+    } = this.state;
     return (
       <div>
         <div>
@@ -61,7 +64,12 @@ class Home extends React.Component {
           <BarraPesquisa onClick={this.handleSearchSubmit} />
         </div>
         <div>
-          <CarLink />
+          <Link
+            data-testid="shopping-cart-button"
+            to={{ pathname: '/cart', state: { selectedItems } }}
+          >
+            <i className="fas fa-shopping-cart" />
+          </Link>
           <span>{selectedItemsQuantity}</span>
         </div>
         <div>
