@@ -26,7 +26,8 @@ class Home extends React.Component {
   componentDidMount() {
     return api
       .getCategories()
-      .then((data) => this.setState({ categories: data }));
+      .then((data) => this.setState({ categories: data }))
+      .catch(() => console.log('Erro de Requisição'));
   }
 
   componentDidUpdate() {
