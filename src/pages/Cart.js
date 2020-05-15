@@ -16,7 +16,7 @@ class Cart extends React.Component {
   }
 
   componentDidMount() {
-    const products = JSON.parse(localStorage.getItem('products'));
+    const products = JSON.parse(localStorage.getItem('cart_products'));
     if (products !== null) {
       this.setState({ cartProducts: products });
     }
@@ -24,7 +24,7 @@ class Cart extends React.Component {
 
   componentDidUpdate() {
     const { cartProducts } = this.state;
-    localStorage.setItem('products', JSON.stringify(cartProducts));
+    localStorage.setItem('cart_products', JSON.stringify(cartProducts));
     if (cartProducts) {
       const totalCartItems = cartProducts.reduce((acc, cur) => {
         const quantity = parseInt(cur.quantity, 10);
