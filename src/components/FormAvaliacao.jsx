@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Rating from '@material-ui/lab/Rating';
+import { Rating } from '@material-ui/lab';
 
 export class FormAvaliacao extends Component {
   constructor() {
