@@ -13,6 +13,7 @@ class Cart extends React.Component {
       cartProducts: [],
     };
     this.redirectPath = this.redirectPath.bind(this);
+    this.updateQuantity = this.updateQuantity.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +32,10 @@ class Cart extends React.Component {
       isShouldRedirect: true,
       redirectToPath: url,
     });
+  }
+
+  updateQuantity(event) {
+    this.props;
   }
 
   returnButton() {
