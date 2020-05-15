@@ -1,8 +1,6 @@
 import React from 'react';
-<<<<<<< HEAD
+import { Link } from 'react-router-dom';
 import { Grid, Container } from '@material-ui/core';
-=======
->>>>>>> parent of ce61d63... carrinho de compras funcional
 import BarraEsquerda from '../components/BarraEsquerda';
 import { CarLink } from '../components/CarLink';
 import { GridProdutos } from '../components/GridProdutos';
@@ -16,27 +14,27 @@ class Home extends React.Component {
     this.state = {
       apiResults: [],
       categories: [],
+      selectedItems: [],
       selectedCategory: '',
       query: '',
       callAPI: false,
     };
-<<<<<<< HEAD
+    this.addToCart = this.addToCart.bind(this);
     this.callApi = this.callApi.bind(this);
     this.categoryChange = this.categoryChange.bind(this);
-=======
-    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
->>>>>>> parent of ce61d63... carrinho de compras funcional
   }
 
   componentDidMount() {
-    return api.getCategories()
+    return api
+      .getCategories()
       .then((data) => this.setState({ categories: data }));
   }
 
   componentDidUpdate() {
     const { callAPI, selectedCategory, query } = this.state;
     if (callAPI) {
-      api.getProductsFromCategoryAndQuery(selectedCategory, query)
+      api
+        .getProductsFromCategoryAndQuery(selectedCategory, query)
         .then((data) => this.setState({
           apiResults: data.results,
           callAPI: false,
@@ -44,7 +42,6 @@ class Home extends React.Component {
     }
   }
 
-<<<<<<< HEAD
   callApi(query) {
     this.setState({ callAPI: true, query });
   }
@@ -56,8 +53,31 @@ class Home extends React.Component {
     });
   }
 
+  addToCart(title, price, id, thumbnail, availableQuantity) {
+    const { selectedItems } = this.state;
+    const itemIndex = selectedItems.findIndex((item) => item.id === id);
+    if (itemIndex !== -1) {
+      const updatedCart = selectedItems;
+      updatedCart[itemIndex].quantity += 1;
+      this.setState({ selectedItems: updatedCart });
+    } else {
+      this.setState({
+        selectedItems: [
+          ...selectedItems,
+          { title, id, price, thumbnail, availableQuantity, quantity: 1 },
+        ],
+      });
+    }
+    console.log(selectedItems);
+  }
+
   render() {
-    const { categories, apiResults, selectedCategory } = this.state;
+    const {
+      categories,
+      apiResults,
+      selectedCategory,
+      selectedItems,
+    } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
@@ -75,59 +95,23 @@ class Home extends React.Component {
                 {apiResults.length === 0 ? (
                   <MessagemInicial />
                 ) : (
-                  <GridProdutos products={apiResults} />
+                  <GridProdutos
+                    products={apiResults}
+                    addToCart={this.addToCart}
+                  />
                 )}
               </div>
             </Grid>
             <Grid item xs={2}>
-              <CarLink />
+              <Link
+                data-testid="shopping-cart-button"
+                to={{ pathname: '/cart', state: { selectedItems } }}
+              >
+                <i className="fas fa-shopping-cart" />
+              </Link>
             </Grid>
           </Grid>
         </Container>
-=======
-  addToCart(title, price, id, thumbnail, availableQuantity) {
-    const { selectedItems } = this.state;
-    const itemIndex = selectedItems.findIndex((item) => item.id === id);
-    if (itemIndex !== -1) {
-      const updatedCart = selectedItems;
-      updatedCart[itemIndex].quantity += 1;
-      this.setState({ selectedItems: updatedCart });
-      // localStorage.setItem('cart_products', JSON.stringify(updatedCart));
-      // console.log(localStorage);
-    } else {
-      this.setState({
-        selectedItems: [
-          ...selectedItems,
-          { title, id, price, thumbnail, availableQuantity, quantity: 1 },
-        ],
-      });
-      // localStorage.setItem('cart_products', JSON.stringify(selectedItems));
-      // console.log(localStorage);
-    }
-  }
-
-  render() {
-    const { categories, apiResults, selectedItemsQuantity } = this.state;
-    return (
-      <div>
-        <div>
-          <BarraEsquerda categorias={categories} />
-        </div>
-        <div>
-          <BarraPesquisa onClick={this.handleSearchSubmit} />
-        </div>
-        <div>
-          <CarLink />
-          <span>{selectedItemsQuantity}</span>
-        </div>
-        <div>
-          {apiResults.length === 0 ? (
-            <MessagemInicial />
-          ) : (
-            <GridProdutos products={apiResults} addToCart={this.addToCart} />
-          )}
-        </div>
->>>>>>> parent of ce61d63... carrinho de compras funcional
       </div>
     );
   }
