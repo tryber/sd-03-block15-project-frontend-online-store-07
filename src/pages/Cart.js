@@ -23,9 +23,7 @@ class Cart extends React.Component {
     const { location } = this.props;
     const { state } = location;
     const { selectedItems } = state;
-    if (selectedItems !== null) {
-      this.setState({ cartProducts: [...selectedItems] });
-    }
+    this.setState({ cartProducts: [...selectedItems] });
   }
 
   redirectPath(url) {
