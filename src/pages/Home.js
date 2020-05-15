@@ -77,7 +77,9 @@ class Home extends React.Component {
         <Container>
           <Grid container spacing={5}>
             <Grid item xs={3}>
-              <BarraEsquerda categorias={categories} selectedCategory={selectedCategory}
+              <BarraEsquerda
+                categorias={categories} 
+                selectedCategory={selectedCategory}
                 onCategoryChange={(e) => this.categoryChange(e.target.value)}
               />
             </Grid>
