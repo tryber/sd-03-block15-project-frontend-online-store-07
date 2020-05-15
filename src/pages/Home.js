@@ -49,12 +49,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const {
-      categories,
-      apiResults,
-      selectedItemsQuantity,
-      selectedItems,
-    } = this.state;
+    const { categories, apiResults, selectedItems } = this.state;
     return (
       <div>
         <div>
@@ -70,7 +65,6 @@ class Home extends React.Component {
           >
             <i className="fas fa-shopping-cart" />
           </Link>
-          <span>{selectedItemsQuantity}</span>
         </div>
         <div>
           {apiResults.length === 0 ? (
