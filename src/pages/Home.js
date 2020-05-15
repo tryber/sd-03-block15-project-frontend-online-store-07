@@ -73,12 +73,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const {
-      categories,
-      apiResults,
-      selectedCategory,
-      selectedItems,
-    } = this.state;
+    const { categories, apiResults, selectedCategory, selectedItems } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
@@ -96,10 +91,7 @@ class Home extends React.Component {
                 {apiResults.length === 0 ? (
                   <MessagemInicial />
                 ) : (
-                  <GridProdutos
-                    products={apiResults}
-                    addToCart={this.addToCart}
-                  />
+                  <GridProdutos products={apiResults} addToCart={this.addToCart} />
                 )}
               </div>
             </Grid>
