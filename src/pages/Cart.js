@@ -66,7 +66,7 @@ class Cart extends React.Component {
               <CardCarrinho key={product.id} product={product} />
             ))}
           </div>
-          <CheckoutCartButton />
+          <CheckoutCartButton products={cartProducts} />
         </div>
       );
     }
