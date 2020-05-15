@@ -96,9 +96,7 @@ class Home extends React.Component {
               </div>
             </Grid>
             <Grid item xs={2}>
-              <CarLink
-                params={{ pathname: '/cart', state: { selectedItems } }}
-              />
+              <CarLink params={{ pathname: '/cart', state: { selectedItems } }} />
             </Grid>
           </Grid>
         </Container>
