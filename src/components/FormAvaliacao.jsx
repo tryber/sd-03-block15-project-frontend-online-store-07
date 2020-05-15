@@ -29,7 +29,7 @@ export class FormAvaliacao extends Component {
         email: '',
         nota: 0,
         mensagem: '',
-    });
+      });
   }
 
   secaoAvaliacoes() {
@@ -45,7 +45,7 @@ export class FormAvaliacao extends Component {
           </ul>
         ))}
       </div>
-    )
+    );
   }
 
   render() {
@@ -53,11 +53,12 @@ export class FormAvaliacao extends Component {
     return (
       <form
         className="formReview"
-        onSubmit={this.insertReview}>
+        onSubmit={this.insertReview}
+      >
         <legend>Avalie este produto</legend>
-        <input 
+        <input
           placeholder="e-mail"
-          type="text"
+          type="email"
           required={true}
           value={email}
           onChange={(evt) => this.evtMapper(evt, 'email')}

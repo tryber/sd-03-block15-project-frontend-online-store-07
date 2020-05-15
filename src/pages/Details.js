@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import FormAvaliacao from '../components/FormAvaliacao';
-import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import './Details.css';
 
 export class Details extends Component {
@@ -25,8 +25,8 @@ export class Details extends Component {
   adicionarUm(max) {
     this.setState({ disableMinBtn: false });
     const novaQuant = this.state.quantidade + 1;
-    this.setState({ quantidade: novaQuant});
-    if (novaQuant === max ) {
+    this.setState({ quantidade: novaQuant });
+    if (novaQuant === max) {
       this.setState({ disableMaxBtn: true });
     }
   }
@@ -34,8 +34,8 @@ export class Details extends Component {
   diminuirUm() {
     this.setState({ disableMaxBtn: false });
     const novaQuant = this.state.quantidade - 1;
-    this.setState({ quantidade: novaQuant});
-    if (novaQuant <= 0 ) {
+    this.setState({ quantidade: novaQuant });
+    if (novaQuant <= 0) {
       this.setState({ disableMinBtn: true });
     }
   }
@@ -59,8 +59,10 @@ export class Details extends Component {
   // }
 
   freteGratis() {
-    if (this.props.location.state.product.shipping.free_shipping)
-      return (<p><LocalShippingIcon />Frete grátis</p>)
+    if (this.props.location.state.product.shipping.free_shipping) {
+      return (<p><LocalShippingIcon />Frete grátis</p>);
+    }
+    return null;
   }
 
   seletorQuantidade() {
@@ -78,11 +80,13 @@ export class Details extends Component {
         />
         <button
           disabled={this.state.disableMinBtn}
-          onClick={() => this.diminuirUm(estoqueDisponivel)}>-
+          onClick={() => this.diminuirUm(estoqueDisponivel)}
+        >-
         </button>
         <button
           disabled={this.state.disableMaxBtn}
-          onClick={() => this.adicionarUm(estoqueDisponivel)}>+
+          onClick={() => this.adicionarUm(estoqueDisponivel)}
+        >+
         </button>
         <button data-testid="product-detail-add-to-cart">Adicionar ao carrinho</button>
       </div>
