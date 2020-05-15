@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import Card from './CardProduto';
+import { CardProduto } from './CardProduto';
 
 export class GridProdutos extends Component {
   render() {
-    const { products } = this.props;
+    const { products, addToCart } = this.props;
+    if (products.length === 0) return <h1>Nenhum Produto foi encontrado</h1>;
     return (
       <div>
         {products.map((product) => (
-          <Card key={product.id} product={product} />
+          <CardProduto key={product.id} product={product} addToCart={addToCart} />
         ))}
       </div>
     );
