@@ -35,12 +35,10 @@ class Home extends React.Component {
     if (callAPI) {
       api
         .getProductsFromCategoryAndQuery(selectedCategory, query)
-        .then((data) =>
-          this.setState({
-            apiResults: data.results,
-            callAPI: false,
-          }),
-        );
+        .then((data) => this.setState({
+          apiResults: data.results,
+          callAPI: false,
+        }));
     }
   }
 
