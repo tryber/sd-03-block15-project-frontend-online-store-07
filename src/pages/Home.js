@@ -22,7 +22,6 @@ class Home extends React.Component {
     this.addToCart = this.addToCart.bind(this);
     this.callApi = this.callApi.bind(this);
     this.categoryChange = this.categoryChange.bind(this);
-    this.cartSizeCounter = this.cartSizeCounter.bind(this);
   }
 
   componentDidMount() {
@@ -56,30 +55,21 @@ class Home extends React.Component {
   }
 
   async addToCart(title, price, id, thumbnail, availableQuantity) {
-    const { selectedItems } = this.state;
+    const { selectedItems, cartSize } = this.state;
     const itemIndex = selectedItems.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
       const updatedCart = selectedItems;
       updatedCart[itemIndex].quantity += 1;
-      await this.setState(() => ({ selectedItems: updatedCart }));
-      this.cartSizeCounter();
+      this.setState(() => ({ selectedItems: updatedCart }));
+      this.setState(() => ({ cartSize: cartSize + 1 }));
     } else {
-      await this.setState(() => ({
+      this.setState(() => ({
         selectedItems: [
           ...selectedItems,
           { title, id, price, thumbnail, availableQuantity, quantity: 1 },
         ],
       }));
-      this.cartSizeCounter();
-    }
-  }
-
-  cartSizeCounter() {
-    const { selectedItems } = this.state;
-    if (selectedItems.length > 0) {
-      const stateReduce = selectedItems.reduce((acc, { quantity }) => acc + quantity, 0);
-      this.setState(() => ({ cartSize: stateReduce }));
-      console.log(stateReduce);
+      this.setState(() => ({ cartSize: cartSize + 1 }));
     }
   }
 
