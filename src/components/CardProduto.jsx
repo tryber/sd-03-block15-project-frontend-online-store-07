@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
 export class CardProduto extends Component {
   constructor(props) {
@@ -45,14 +46,10 @@ export class CardProduto extends Component {
         <h4>{title}</h4>
         <h5>{id}</h5>
         <img src={thumbnail} alt={title} />
-        <h5>
-          {`Preço: R$ ${price.toFixed(2)}`}
-        </h5>
-        <h5>
-          {`Quantidade disponível: ${availableQuantity}`}
-        </h5>
-        {freeShipping && <h6 data-testid="free-shipping">FRETE GRÁTIS</h6>}
-        {this.addToCartButton()}
+        <h5>{`Preço: R$ ${price.toFixed(2)}`}</h5>
+        <h5>{`Quantidade disponível: ${availableQuantity}`}</h5>
+        {freeShipping && (<p data-testid="free-shipping"><LocalShippingIcon />Frete grátis</p>)}
+        <div>{this.addToCartButton()}</div>
         <Link
           data-testid="product-detail-link"
           to={{ pathname: `/details/${id}`, state: { product } }}

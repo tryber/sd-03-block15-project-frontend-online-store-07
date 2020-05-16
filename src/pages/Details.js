@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import FormAvaliacao from '../components/FormAvaliacao';
+import { FormAvaliacao } from '../components/FormAvaliacao';
 import './Details.css';
 
 export class Details extends Component {
@@ -42,13 +42,19 @@ export class Details extends Component {
 
   freteGratis() {
     if (this.props.location.state.product.shipping.free_shipping) {
-      return (<p><LocalShippingIcon />Frete grátis</p>);
+      return (
+        <p>
+          <LocalShippingIcon />
+          Frete grátis
+        </p>
+      );
     }
     return null;
   }
 
   seletorQuantidade() {
-    const estoqueDisponivel = this.props.location.state.product.available_quantity;
+    const estoqueDisponivel = this.props.location.state.product
+      .available_quantity;
     return (
       <div>
         <label htmlFor="quantidade">Quantidade: </label>
@@ -63,26 +69,37 @@ export class Details extends Component {
         <button
           disabled={this.state.disableMinBtn}
           onClick={() => this.diminuirUm(estoqueDisponivel)}
-        >-
+        >
+          -
         </button>
         <button
           disabled={this.state.disableMaxBtn}
           onClick={() => this.adicionarUm(estoqueDisponivel)}
-        >+
+        >
+          +
         </button>
-        <button data-testid="product-detail-add-to-cart">Adicionar ao carrinho</button>
+        <button data-testid="product-detail-add-to-cart" type="button">
+          Adicionar ao carrinho
+        </button>
       </div>
     );
   }
 
   render() {
-    const { location: { state: { product } } } = this.props;
+    const {
+      location: {
+        state: { product },
+      },
+    } = this.props;
     const { price, title, thumbnail, attributes } = product;
     return (
       <div className="telaDetalhes">
         <div className="cabecalhoProduto">
           <Link to="/">Voltar</Link>
-          <h2 data-testid="product-detail-name">{title} - R$ {price}</h2> {this.freteGratis()}
+          <h2 data-testid="product-detail-name">
+            {title} - R$ {price}
+          </h2>{' '}
+          {this.freteGratis()}
         </div>
         <div className="detalhesProduto">
           <div className="imagemDetalhe">
@@ -90,7 +107,11 @@ export class Details extends Component {
           </div>
           <div className="especificProduto">
             <h3>Especificações técnicas</h3>
-            {attributes.map((att) => <li key={att.name}>{att.name}: {att.value_name}</li>)}
+            {attributes.map((att) => (
+              <li key={att.name}>
+                {att.name}: {att.value_name}
+              </li>
+            ))}
           </div>
         </div>
         {this.seletorQuantidade()}

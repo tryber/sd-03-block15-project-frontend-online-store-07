@@ -14,6 +14,7 @@ class Home extends React.Component {
       apiResults: [],
       categories: [],
       selectedItems: [],
+      cartSize: 0,
       selectedCategory: '',
       query: '',
       callAPI: false,
@@ -21,6 +22,7 @@ class Home extends React.Component {
     this.addToCart = this.addToCart.bind(this);
     this.callApi = this.callApi.bind(this);
     this.categoryChange = this.categoryChange.bind(this);
+    this.cartSizeCounter = this.cartSizeCounter.bind(this);
   }
 
   componentDidMount() {
@@ -53,25 +55,42 @@ class Home extends React.Component {
     });
   }
 
-  addToCart(title, price, id, thumbnail, availableQuantity) {
+  async addToCart(title, price, id, thumbnail, availableQuantity) {
     const { selectedItems } = this.state;
     const itemIndex = selectedItems.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
       const updatedCart = selectedItems;
       updatedCart[itemIndex].quantity += 1;
-      this.setState({ selectedItems: updatedCart });
+      await this.setState(() => ({ selectedItems: updatedCart }));
+      this.cartSizeCounter();
     } else {
-      this.setState({
+      await this.setState(() => ({
         selectedItems: [
           ...selectedItems,
           { title, id, price, thumbnail, availableQuantity, quantity: 1 },
         ],
-      });
+      }));
+      this.cartSizeCounter();
+    }
+  }
+
+  cartSizeCounter() {
+    const { selectedItems } = this.state;
+    if (selectedItems.length > 0) {
+      const stateReduce = selectedItems.reduce((acc, { quantity }) => acc + quantity, 0);
+      this.setState(() => ({ cartSize: stateReduce }));
+      console.log(stateReduce);
     }
   }
 
   render() {
-    const { categories, apiResults, selectedCategory, selectedItems } = this.state;
+    const {
+      categories,
+      apiResults,
+      selectedCategory,
+      selectedItems,
+      cartSize,
+    } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
@@ -89,12 +108,18 @@ class Home extends React.Component {
                 {apiResults.length === 0 ? (
                   <MessagemInicial />
                 ) : (
-                  <GridProdutos products={apiResults} addToCart={this.addToCart} />
+                  <GridProdutos
+                    products={apiResults}
+                    addToCart={this.addToCart}
+                  />
                 )}
               </div>
             </Grid>
             <Grid item xs={2}>
-              <CarLink params={{ pathname: '/cart', state: { selectedItems } }} />
+              <CarLink
+                params={{ pathname: '/cart', state: { selectedItems } }}
+              />
+              <span data-testid="shopping-cart-size">{cartSize}</span>
             </Grid>
           </Grid>
         </Container>

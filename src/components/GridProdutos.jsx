@@ -4,7 +4,7 @@ import { CardProduto } from './CardProduto';
 export class GridProdutos extends Component {
   render() {
     const { products, addToCart } = this.props;
-    if (products.length === 0) return <h1>Nenhum Produto foi encontrado</h1>;
+    if (!products) return <h1>Nenhum Produto foi encontrado</h1>;
     return (
       <div>
         {products.map((product) => (
