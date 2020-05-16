@@ -86,11 +86,7 @@ export class Details extends Component {
   }
 
   render() {
-    const {
-      location: {
-        state: { product },
-      },
-    } = this.props;
+    const { location: { state: { product } } } = this.props;
     const { price, title, thumbnail, attributes } = product;
     return (
       <div className="telaDetalhes">
@@ -98,7 +94,7 @@ export class Details extends Component {
           <Link to="/">Voltar</Link>
           <h2 data-testid="product-detail-name">
             {title} - R$ {price}
-          </h2>{' '}
+          </h2>
           {this.freteGratis()}
         </div>
         <div className="detalhesProduto">
