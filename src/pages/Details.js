@@ -195,7 +195,7 @@ export class Details extends Component {
       >
         Adicionar ao carrinho
       </button>
-   );
+    );
   }
 
   render() {
