@@ -9,8 +9,10 @@ export class Details extends Component {
   constructor(props) {
     super(props);
 
+    const itensSelecionados = JSON.parse(localStorage.getItem('cartProducts'));
+
     this.state = {
-      itensCarrinho: [],
+      itensCarrinho: [...itensSelecionados],
       quantidade: 0,
       quantidadeCarrinho: 0,
       comentarios: null,
@@ -39,17 +41,16 @@ export class Details extends Component {
     const { state } = location;
     const { product } = state;
     const { id } = product;
-    const itensSelecionados = JSON.parse(localStorage.getItem('cartProducts'));
-    if (itensSelecionados !== null) {
-      this.setState({ itensCarrinho: [...itensSelecionados] });
-    }
     const itemIndex = itensCarrinho.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
       const updatedCart = itensCarrinho;
       updatedCart[itemIndex].quantity += quantidade;
       this.setState({ itensCarrinho: updatedCart });
       this.setState({ quantidade: updatedCart[itemIndex].quantity });
+      console.log(updatedCart[itemIndex].quantity);
     }
+    console.log(itemIndex);
+    console.log(itensCarrinho);
   }
 
   atualizaCarrinho() {
@@ -187,6 +188,12 @@ export class Details extends Component {
   }
 
   botaoAdicionarAoCarrinho() {
+      const {
+        location: {
+          state: { product },
+        },
+      } = this.props;
+      const { id, price, title, thumbnail, availableQuantity} = product;
     return (
       <button
         data-testid="product-detail-add-to-cart"
