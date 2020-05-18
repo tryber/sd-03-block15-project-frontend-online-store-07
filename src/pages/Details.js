@@ -75,7 +75,7 @@ export class Details extends Component {
       updatedCart[itemIndex].quantity = quantidade;
       this.setState({
         itensCarrinho: updatedCart,
-        quantidadeCarrinho: quantidadeCarrinho + quantidade,
+        quantidadeCarrinho: quantidadeCarrinho + Number(quantidade),
       });
     } else {
       this.setState({
@@ -173,7 +173,7 @@ export class Details extends Component {
           <input
             id="quantidade"
             type="number"
-            min="0"
+            min="1"
             max={availableQuantity}
             value={quantidade}
             onChange={this.atualizaQuantidade}
@@ -184,17 +184,19 @@ export class Details extends Component {
     );
   }
 
-  // botãoAdicionaraoCarrinho() {
-  //   return (
-  //     <button
-  //       data-testid="product-detail-add-to-cart"
-  //       type="button"
-  //       onClick={this.adicionarAoCarrinho}
-  //     >
-  //       Adicionar ao carrinho
-  //     </button>
-  //   );
-  // }
+  btnAdicionaraoCarrinho() {
+    const { location: { state: { product } } } = this.props;
+    const { title, thumbnail, price, id, availableQuantity } = product;
+    return (
+      <button
+        data-testid="product-detail-add-to-cart"
+        type="button"
+        onClick={() => this.adicionarAoCarrinho(title, price, id,thumbnail, availableQuantity)}
+      >
+        Adicionar ao carrinho
+      </button>
+   );
+  }
 
   render() {
     const { quantidadeCarrinho } = this.state;
@@ -222,7 +224,7 @@ export class Details extends Component {
           </div>
         </div>
         {this.seletorQuantidade()}
-        {/* {this.adicionarAoCarrinho()} */}
+        {this.btnAdicionaraoCarrinho()}
         <FormAvaliacao prodID={id} />
       </div>
     );

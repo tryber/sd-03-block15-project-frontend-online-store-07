@@ -24,6 +24,7 @@ export class CardCarrinho extends Component {
         ? currentState.quantity + 1
         : currentState.quantity - 1;
       if (updatedQuantity >= 0 && updatedQuantity <= max) {
+        console.log('updating' + updatedQuantity)
         return { quantity: updatedQuantity };
       }
       return { quantity: 0 };
@@ -58,18 +59,16 @@ export class CardCarrinho extends Component {
   render() {
     const { quantity } = this.state;
     const { product } = this.props;
-    const { title, thumbnail, price, id, availableQuantity } = product;
+    const { title, thumbnail, price, id } = product;
     return (
-      <div>
+      <div key={id}>
         <p>{id}</p>
         <div>
           <img src={thumbnail} alt={title} />
         </div>
         <div data-testid="shopping-cart-product-name">{title}</div>
-        <div data-testid="shopping-cart-product-quantity">{quantity}</div>
-        <div>
-          Quantidade disponível:
-          {availableQuantity}
+        <div data-testid="shopping-cart-product-quantity">
+        Quantidade: {quantity}
         </div>
         <div>
           R$
