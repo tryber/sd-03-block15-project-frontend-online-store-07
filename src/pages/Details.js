@@ -23,6 +23,7 @@ export class Details extends Component {
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.adicionarUm = this.adicionarUm.bind(this);
     this.diminuirUm = this.diminuirUm.bind(this);
+    this.adicionarAoCarrinho = this.adicionarAoCarrinho.bind(this);
   }
 
   componentDidMount() {
@@ -67,28 +68,30 @@ export class Details extends Component {
   }
 
   adicionarAoCarrinho(title, price, id, thumbnail, availableQuantity) {
-    const { selectedItems, cartSize } = this.state;
-    const itemIndex = selectedItems.findIndex((item) => item.id === id);
+    const { itensCarrinho, quantidadeCarrinho, quantidade } = this.state;
+    const itemIndex = itensCarrinho.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
-      const updatedCart = selectedItems;
-      updatedCart[itemIndex].quantity += 1;
-      this.setState({ selectedItems: updatedCart });
-      this.setState(() => ({ cartSize: cartSize + 1 }));
+      const updatedCart = itensCarrinho;
+      updatedCart[itemIndex].quantity = quantidade;
+      this.setState({
+        itensCarrinho: updatedCart,
+        quantidadeCarrinho: quantidadeCarrinho + quantidade,
+      });
     } else {
       this.setState({
-        selectedItems: [
-          ...selectedItems,
+        itensCarrinho: [
+          ...itensCarrinho,
           {
             title,
             id,
             price,
             thumbnail,
             availableQuantity,
-            quantity: 1,
+            quantity: quantidade,
           },
         ],
+        quantidadeCarrinho: quantidadeCarrinho + quantidade,
       });
-      this.setState(() => ({ cartSize: cartSize + 1 }));
     }
   }
 
@@ -168,9 +171,9 @@ export class Details extends Component {
         >
           +
         </button>
-        <button data-testid="product-detail-add-to-cart" type="button">
+        {/* <button data-testid="product-detail-add-to-cart" type="button" onClick={this.adicionarAoCarrinho}>
           Adicionar ao carrinho
-        </button>
+        </button> */}
       </div>
     );
   }
