@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
+import { InputLabel, NativeSelect } from '@material-ui/core';
 
 class BarraEsquerda extends Component {
   render() {
     const { categorias, onCategoryChange, selectedCategory } = this.props;
     return (
       <div>
+        <InputLabel htmlFor="categories">Selecione a categoria</InputLabel>
+        <NativeSelect
+          data-testid="category"
+          id="categories"
+          name="categories"
+          checked={selectedCategory}
+          onChange={onCategoryChange}
+        >
         {categorias.map((categoria) => (
-          <li key={categoria.id}>
-            <input
-              data-testid="category"
-              id={categoria.id}
-              value={categoria.id}
-              name="categories"
-              type="radio"
-              checked={selectedCategory === categoria.id}
-              onChange={onCategoryChange}
-            />
-            <label htmlFor={categoria.id}>{categoria.name}</label>
-          </li>
+          <option key={categoria.id} value={categoria.id}>{categoria.name}</option>
         ))}
+        </NativeSelect>
       </div>
     );
   }

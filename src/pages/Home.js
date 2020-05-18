@@ -33,6 +33,9 @@ class Home extends React.Component {
 
   componentDidUpdate() {
     const { callAPI, selectedCategory, query } = this.state;
+    console.log(callAPI);
+    console.log(selectedCategory);
+    console.log(query);
     if (callAPI) {
       api
         .getProductsFromCategoryAndQuery(selectedCategory, query)
@@ -44,6 +47,7 @@ class Home extends React.Component {
   }
 
   callApi(query) {
+    console.log('callAPI chamada');
     this.setState({ callAPI: true, query });
   }
 
