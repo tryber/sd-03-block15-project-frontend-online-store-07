@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function MessagemInicial() {
-  return (
-    <div>
-      <h1 data-testid="home-initial-message">
-        Digite algum termo de pesquisa ou escolha uma categoria.
-      </h1>
-    </div>
-  );
+class MessagemInicial extends Component {
+  render() {
+    const { loading } = this.props;
+    return (
+      (!loading) ? (
+        <h3 data-testid="home-initial-message">
+          Digite algum termo de pesquisa ou escolha uma categoria.
+        </h3>)
+      : (<p>Carregando resultados...</p>)
+    );
+  }
 }
 
 export default MessagemInicial;

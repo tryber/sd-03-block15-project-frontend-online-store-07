@@ -9,10 +9,10 @@ class BarraEsquerda extends Component {
           <li key={categoria.id}>
             <input
               data-testid="category"
-              type="radio"
               id={categoria.id}
               value={categoria.id}
               name="categories"
+              type="radio"
               checked={selectedCategory === categoria.id}
               onChange={onCategoryChange}
             />

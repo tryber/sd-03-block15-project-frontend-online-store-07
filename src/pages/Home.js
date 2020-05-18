@@ -5,6 +5,7 @@ import BarraEsquerda from '../components/BarraEsquerda';
 import { GridProdutos } from '../components/GridProdutos';
 import BarraPesquisa from '../components/BarraPesquisa';
 import MessagemInicial from '../components/MessagemInicial';
+import '../App.css';
 import * as api from '../services/api';
 
 class Home extends React.Component {
@@ -19,8 +20,8 @@ class Home extends React.Component {
       query: '',
       callAPI: false,
     };
-    this.addToCart = this.addToCart.bind(this);
     this.callApi = this.callApi.bind(this);
+    this.addToCart = this.addToCart.bind(this);
     this.categoryChange = this.categoryChange.bind(this);
     this.cartCounter = this.cartCounter.bind(this);
   }
@@ -121,8 +122,8 @@ class Home extends React.Component {
             <Grid item xs={6}>
               <BarraPesquisa onClick={this.callApi} />
               <div>
-                {apiResults.length === 0 ? (
-                  <MessagemInicial />
+                {!apiResults.length ? (
+                  <MessagemInicial loading={callAPI} />
                 ) : (
                   <GridProdutos products={apiResults} addToCart={this.addToCart} />
                 )}

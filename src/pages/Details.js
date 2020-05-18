@@ -14,6 +14,7 @@ export class Details extends Component {
       disableMinBtn: true,
       disableMaxBtn: false,
     };
+
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.adicionarUm = this.adicionarUm.bind(this);
     this.diminuirUm = this.diminuirUm.bind(this);
@@ -48,20 +49,22 @@ export class Details extends Component {
 
   adicionarUm(max) {
     const { quantidade } = this.state;
-    this.setState({ disableMinBtn: false });
-    const novaQuant = quantidade + 1;
-    this.setState({ quantidade: novaQuant });
-    if (novaQuant === max) {
+    this.setState(() => ({
+      disableMinBtn: false,
+      quantidade: quantidade + 1,
+    }));
+    if (quantidade === max - 1) {
       this.setState({ disableMaxBtn: true });
     }
   }
 
   diminuirUm() {
     const { quantidade } = this.state;
-    this.setState({ disableMaxBtn: false });
-    const novaQuant = quantidade - 1;
-    this.setState({ quantidade: novaQuant });
-    if (novaQuant <= 0) {
+    this.setState(() => ({
+      disableMinBtn: false,
+      quantidade: quantidade - 1,
+    }));
+    if (quantidade < 2) {
       this.setState({ disableMinBtn: true });
     }
   }
@@ -88,7 +91,6 @@ export class Details extends Component {
     const { state } = location;
     const { product } = state;
     const { available_quantity: availableQuantity } = product;
-    const estoqueDisponivel = availableQuantity;
     const { disableMinBtn, disableMaxBtn, quantidade } = this.state;
     return (
       <div>
@@ -98,7 +100,7 @@ export class Details extends Component {
             id="quantidade"
             type="number"
             min="0"
-            max={estoqueDisponivel}
+            max={availableQuantity}
             value={quantidade}
             onChange={this.atualizaQuantidade}
           />
@@ -106,14 +108,14 @@ export class Details extends Component {
         <button
           type="button"
           disabled={disableMinBtn}
-          onClick={() => this.diminuirUm(estoqueDisponivel)}
+          onClick={() => this.diminuirUm(availableQuantity)}
         >
           -
         </button>
         <button
           type="button"
           disabled={disableMaxBtn}
-          onClick={() => this.adicionarUm(estoqueDisponivel)}
+          onClick={() => this.adicionarUm(availableQuantity)}
         >
           +
         </button>
@@ -125,8 +127,8 @@ export class Details extends Component {
   }
 
   render() {
-    const { location: { state: { product } } } = this.props;
-    const { price, title, thumbnail, attributes } = product;
+    const { location: { state: { product, cart } } } = this.props;
+    const { id, price, title, thumbnail, attributes } = product;
     return (
       <div className="telaDetalhes">
         <div className="cabecalhoProduto">
@@ -137,9 +139,7 @@ export class Details extends Component {
           {this.freteGratis()}
         </div>
         <div className="detalhesProduto">
-          <div className="imagemDetalhe">
-            <img src={thumbnail} alt={`Imagem de ${title}`} height="350px" />
-          </div>
+          <img src={thumbnail} alt={`Imagem de ${title}`} height="350px" />
           <div className="especificProduto">
             <h3>Especificações técnicas</h3>
             {attributes.map((att) => (
@@ -150,7 +150,7 @@ export class Details extends Component {
           </div>
         </div>
         {this.seletorQuantidade()}
-        <FormAvaliacao />
+        <FormAvaliacao prodID={id} />
       </div>
     );
   }

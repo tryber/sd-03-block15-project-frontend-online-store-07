@@ -3,16 +3,17 @@ import Rating from '@material-ui/lab/Rating';
 import '../pages/Details.css';
 
 export class FormAvaliacao extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      prodId: this.props.prodID,
       email: '',
       nota: 0,
       mensagem: '',
-      reviews: [],
     };
     this.evtMapper = this.evtMapper.bind(this);
     this.insertReview = this.insertReview.bind(this);
+    this.secaoAvaliacoes = this.secaoAvaliacoes.bind(this);
   }
 
   evtMapper(event, name) {
@@ -21,27 +22,32 @@ export class FormAvaliacao extends Component {
   }
 
   insertReview(evt) {
-    const { email, nota, mensagem, reviews } = this.state;
+    const { email, nota, mensagem, prodId } = this.state;
+    const reviewsLS = localStorage.getItem(prodId) ?
+    JSON.parse(localStorage.getItem(prodId)) :
+    '';
     evt.preventDefault();
     this.setState(
       {
-        reviews: [...reviews, { email, nota, mensagem }],
         email: '',
         nota: 0,
         mensagem: '',
       });
+    const novoReview = { email, nota, mensagem };
+    localStorage.setItem(prodId, JSON.stringify([...reviewsLS, novoReview]));
   }
 
-  secaoAvaliacoes() {
-    const { reviews } = this.state;
+  secaoAvaliacoes(reviewsLS) {
+    const parsedReviews = JSON.parse(reviewsLS);
+    const { prodId } = this.state;
     return (
       <div>
         <h2>Avaliações</h2>
-        {reviews.map((ava) => (
+        {parsedReviews.map((ava) => (
           <ul className="avaliacao">
-            <li>Usuário: {ava.email}</li>
-            <li>Nota: {ava.nota}</li>
-            <li>Mensagem: {ava.mensagem}</li>
+            <li key={`${prodId} - Usu`}><strong>Usuário:</strong> {ava.email}</li>
+            <li key={`${prodId} - Ema`}><strong>Nota:</strong> {ava.nota}</li>
+            <li key={`${prodId} - Msg`}><strong>Mensagem:</strong> {ava.mensagem}</li>
           </ul>
         ))}
       </div>
@@ -49,10 +55,11 @@ export class FormAvaliacao extends Component {
   }
 
   render() {
-    const { email, nota, mensagem } = this.state;
+    const { prodId, email, nota, mensagem } = this.state;
+    const reviewsLS = localStorage.getItem(prodId);
     return (
       <form className="formReview" onSubmit={this.insertReview} >
-        <legend>Avalie este produto</legend>
+        <h3>Avalie este produto</h3>
         <input
           placeholder="e-mail"
           type="email"
@@ -74,7 +81,7 @@ export class FormAvaliacao extends Component {
           onChange={(evt) => this.evtMapper(evt, 'mensagem')}
         />
         <button type="submit">Enviar</button>
-        {this.secaoAvaliacoes()}
+        {reviewsLS ? this.secaoAvaliacoes(reviewsLS) : <p>Seja o primeiro a avaliar</p>}
       </form>
     );
   }
