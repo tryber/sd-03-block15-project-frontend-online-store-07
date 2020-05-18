@@ -1,4 +1,5 @@
 import React from 'react';
+import {BotãoRetorno} from '../components/BotãoRetorno';
 import { CardCarrinho } from '../components/CardCarrinho';
 import { CheckoutCartButton } from '../components/CheckoutCartButton';
 import MensagemCarrinho from '../components/MensagemCarrinho';
@@ -7,12 +8,9 @@ class Cart extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isShouldRedirect: false,
-      redirectToPath: '',
-      cartProducts: [],
-    };
-    this.redirectPath = this.redirectPath.bind(this);
+    this.state = { cartProducts: [] };
+
+    this.clearCart = this.clearCart.bind(this);
   }
 
   componentDidMount() {
@@ -20,41 +18,33 @@ class Cart extends React.Component {
   }
 
   mountCart() {
-    const { location } = this.props;
-    const { state } = location;
-    const { selectedItems } = state;
-    this.setState({ cartProducts: [...selectedItems] });
+    const storedSelectedItems = JSON.parse(
+      localStorage.getItem('cartProducts'),
+    );
+    this.setState({ cartProducts: storedSelectedItems });
   }
 
-  redirectPath(url) {
-    this.setState({
-      isShouldRedirect: true,
-      redirectToPath: url,
-    });
+  clearCart() {
+    localStorage.removeItem('cartProducts');
+    this.setState({ cartProducts: [] });
   }
 
-  returnButton() {
+  clearButton() {
     return (
       <div>
-        <button
-          label="return"
-          type="button"
-          onClick={() => this.redirectPath('/')}
-        >
-          Retornar
+        <button type="button" onClick={this.clearCart}>
+          Limpar Carrinho
         </button>
       </div>
     );
   }
 
   render() {
-    const { history } = this.props;
-    const { cartProducts, isShouldRedirect, redirectToPath } = this.state;
-    if (isShouldRedirect) history.push(redirectToPath);
+    const { cartProducts } = this.state;
     if (cartProducts && cartProducts.length !== 0) {
       return (
         <div>
-          {this.returnButton()}
+          <BotãoRetorno />
           <div>
             <h2>Carrinho de compras: </h2>
             {cartProducts.map((product) => (
@@ -62,12 +52,13 @@ class Cart extends React.Component {
             ))}
           </div>
           <CheckoutCartButton products={cartProducts} />
+          {this.clearButton()}
         </div>
       );
     }
     return (
       <div>
-        {this.returnButton()}
+        <BotãoRetorno />
         <MensagemCarrinho />
       </div>
     );
