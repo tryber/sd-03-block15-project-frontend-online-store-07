@@ -107,7 +107,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { categories, apiResults, selectedCategory, cartSize } = this.state;
+    const { categories, apiResults, selectedCategory, cartSize, callAPI } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
