@@ -188,12 +188,9 @@ export class Details extends Component {
   }
 
   botaoAdicionarAoCarrinho() {
-      const {
-        location: {
-          state: { product },
-        },
-      } = this.props;
-      const { id, price, title, thumbnail, availableQuantity} = product;
+    const {
+      location: { state: { product } } } = this.props;
+    const { id, price, title, thumbnail, availableQuantity } = product;
     return (
       <button
         data-testid="product-detail-add-to-cart"
@@ -207,11 +204,7 @@ export class Details extends Component {
 
   render() {
     const { quantidadeCarrinho } = this.state;
-    const {
-      location: {
-        state: { product },
-      },
-    } = this.props;
+    const { location: { state: { product } } } = this.props;
     const { id, price, title, thumbnail, attributes } = product;
     return (
       <div className="telaDetalhes">
