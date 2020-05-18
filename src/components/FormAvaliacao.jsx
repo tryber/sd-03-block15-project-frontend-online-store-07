@@ -6,7 +6,7 @@ export class FormAvaliacao extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      prod_id: this.props.prodID,
+      prodId: this.props.prodID,
       email: '',
       nota: 0,
       mensagem: '',
@@ -22,9 +22,9 @@ export class FormAvaliacao extends Component {
   }
 
   insertReview(evt) {
-    const { email, nota, mensagem, prod_id } = this.state;
-    const reviewsLS = localStorage.getItem(prod_id) ?
-    JSON.parse(localStorage.getItem(prod_id)) :
+    const { email, nota, mensagem, prodId } = this.state;
+    const reviewsLS = localStorage.getItem(prodId) ?
+    JSON.parse(localStorage.getItem(prodId)) :
     '';
     evt.preventDefault();
     this.setState(
@@ -34,20 +34,20 @@ export class FormAvaliacao extends Component {
         mensagem: '',
       });
     const novoReview = { email, nota, mensagem };
-    localStorage.setItem(prod_id, JSON.stringify([...reviewsLS, novoReview]));
+    localStorage.setItem(prodId, JSON.stringify([...reviewsLS, novoReview]));
   }
 
   secaoAvaliacoes(reviewsLS) {
     const parsedReviews = JSON.parse(reviewsLS);
-    const { prod_id } = this.state;
+    const { prodId } = this.state;
     return (
       <div>
         <h2>Avaliações</h2>
         {parsedReviews.map((ava) => (
           <ul className="avaliacao">
-            <li key={`${prod_id} - Usu`}><strong>Usuário:</strong> {ava.email}</li>
-            <li key={`${prod_id} - Ema`}><strong>Nota:</strong> {ava.nota}</li>
-            <li key={`${prod_id} - Msg`}><strong>Mensagem:</strong> {ava.mensagem}</li>
+            <li key={`${prodId} - Usu`}><strong>Usuário:</strong> {ava.email}</li>
+            <li key={`${prodId} - Ema`}><strong>Nota:</strong> {ava.nota}</li>
+            <li key={`${prodId} - Msg`}><strong>Mensagem:</strong> {ava.mensagem}</li>
           </ul>
         ))}
       </div>
@@ -55,8 +55,8 @@ export class FormAvaliacao extends Component {
   }
 
   render() {
-    const { prod_id, email, nota, mensagem } = this.state;
-    const reviewsLS = localStorage.getItem(prod_id);
+    const { prodId, email, nota, mensagem } = this.state;
+    const reviewsLS = localStorage.getItem(prodId);
     return (
       <form className="formReview" onSubmit={this.insertReview} >
         <h3>Avalie este produto</h3>
