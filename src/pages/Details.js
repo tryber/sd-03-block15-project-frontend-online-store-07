@@ -23,7 +23,7 @@ export class Details extends Component {
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.adicionarUm = this.adicionarUm.bind(this);
     this.diminuirUm = this.diminuirUm.bind(this);
-    this.adicionarAoCarrinho = this.adicionarAoCarrinho.bind(this);
+    // this.adicionarAoCarrinho = this.adicionarAoCarrinho.bind(this);
   }
 
   componentDidMount() {
@@ -169,12 +169,21 @@ export class Details extends Component {
         >
           +
         </button>
-        {/* <button data-testid="product-detail-add-to-cart" type="button" onClick={this.adicionarAoCarrinho}>
-          Adicionar ao carrinho
-        </button> */}
       </div>
     );
   }
+
+  // botãoAdicionaraoCarrinho() {
+  //   return (
+  //     <button
+  //       data-testid="product-detail-add-to-cart"
+  //       type="button"
+  //       onClick={this.adicionarAoCarrinho}
+  //     >
+  //       Adicionar ao carrinho
+  //     </button>
+  //   );
+  // }
 
   render() {
     const { quantidadeCarrinho } = this.state;
@@ -202,6 +211,7 @@ export class Details extends Component {
           </div>
         </div>
         {this.seletorQuantidade()}
+        {/* {this.adicionarAoCarrinho()} */}
         <FormAvaliacao prodID={id} />
       </div>
     );
