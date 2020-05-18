@@ -78,7 +78,7 @@ export class Details extends Component {
       updatedCart[itemIndex].quantity = quantidade;
       this.setState({
         itensCarrinho: updatedCart,
-        quantidadeCarrinho: quantidadeCarrinho + quantidade,
+        quantidadeCarrinho: quantidadeCarrinho + Number(quantidade),
       });
     } else {
       this.setState({
@@ -176,7 +176,7 @@ export class Details extends Component {
           <input
             id="quantidade"
             type="number"
-            min="0"
+            min="1"
             max={availableQuantity}
             value={quantidade}
             onChange={this.atualizaQuantidade}
