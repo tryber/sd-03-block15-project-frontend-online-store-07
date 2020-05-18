@@ -1,5 +1,5 @@
 import React from 'react';
-import {BotãoRetorno} from '../components/BotãoRetorno';
+import { BotãoRetorno } from '../components/BotaoRetorno';
 import { CardCarrinho } from '../components/CardCarrinho';
 import { CheckoutCartButton } from '../components/CheckoutCartButton';
 import MensagemCarrinho from '../components/MensagemCarrinho';

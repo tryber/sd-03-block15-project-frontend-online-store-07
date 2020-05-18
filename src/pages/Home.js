@@ -107,13 +107,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const {
-      categories,
-      apiResults,
-      selectedCategory,
-      selectedItems,
-      cartSize,
-    } = this.state;
+    const { categories, apiResults, selectedCategory, cartSize } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
@@ -131,18 +125,12 @@ class Home extends React.Component {
                 {apiResults.length === 0 ? (
                   <MessagemInicial />
                 ) : (
-                  <GridProdutos
-                    products={apiResults}
-                    addToCart={this.addToCart}
-                  />
+                  <GridProdutos products={apiResults} addToCart={this.addToCart} />
                 )}
               </div>
             </Grid>
             <Grid item xs={2}>
-              <CarLink
-                size={cartSize}
-                params={{ pathname: '/cart', state: { selectedItems } }}
-              />
+              <CarLink size={cartSize} />
             </Grid>
           </Grid>
         </Container>
