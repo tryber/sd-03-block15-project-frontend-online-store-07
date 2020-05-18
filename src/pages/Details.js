@@ -70,7 +70,6 @@ export class Details extends Component {
   }
 
   adicionarAoCarrinho(title, price, id, thumbnail, availableQuantity) {
-    console.log('adicionarAoCarrinho');
     const { itensCarrinho, quantidadeCarrinho, quantidade } = this.state;
     const itemIndex = itensCarrinho.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
