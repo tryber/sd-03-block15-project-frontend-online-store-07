@@ -77,7 +77,7 @@ export class Details extends Component {
       updatedCart[itemIndex].quantity = quantidade;
       this.setState({
         itensCarrinho: updatedCart,
-        quantidadeCarrinho: quantidadeCarrinho + Number(quantidade),
+        quantidadeCarrinho: Number(quantidadeCarrinho) + Number(quantidade),
       });
     } else {
       this.setState({
@@ -191,7 +191,7 @@ export class Details extends Component {
       <button
         data-testid="product-detail-add-to-cart"
         type="button"
-        onClick={this.adicionarAoCarrinho}
+        onClick={() => this.adicionarAoCarrinho(title, price, id, thumbnail, availableQuantity)}
       >
         Adicionar ao carrinho
       </button>
