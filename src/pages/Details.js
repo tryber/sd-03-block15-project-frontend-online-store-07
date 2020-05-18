@@ -139,9 +139,7 @@ export class Details extends Component {
   }
 
   seletorQuantidade() {
-    const { location } = this.props;
-    const { state } = location;
-    const { product } = state;
+    const { location: { state: { product } } } = this.props;
     const { available_quantity: availableQuantity } = product;
     const { disableMinBtn, disableMaxBtn, quantidade } = this.state;
     return (
@@ -180,11 +178,7 @@ export class Details extends Component {
 
   render() {
     const { quantidadeCarrinho } = this.state;
-    const {
-      location: {
-        state: { product },
-      },
-    } = this.props;
+    const { location: { state: { product } } } = this.props;
     const { id, price, title, thumbnail, attributes } = product;
     return (
       <div className="telaDetalhes">
