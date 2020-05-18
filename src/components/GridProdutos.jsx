@@ -8,7 +8,11 @@ export class GridProdutos extends Component {
     return (
       <div>
         {products.map((product) => (
-          <CardProduto key={product.id} product={product} addToCart={addToCart} />
+          <CardProduto
+            key={product.id}
+            product={product}
+            addToCart={addToCart}
+          />
         ))}
       </div>
     );

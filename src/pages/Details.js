@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import FormAvaliacao from '../components/FormAvaliacao';
+import CarLink from '../components/CarLink';
 import './Details.css';
 
 export class Details extends Component {
@@ -13,6 +14,7 @@ export class Details extends Component {
       disableMinBtn: true,
       disableMaxBtn: false,
     };
+
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.adicionarUm = this.adicionarUm.bind(this);
     this.diminuirUm = this.diminuirUm.bind(this);
@@ -23,19 +25,21 @@ export class Details extends Component {
   }
 
   adicionarUm(max) {
-    this.setState({ disableMinBtn: false });
-    const novaQuant = this.state.quantidade + 1;
-    this.setState({ quantidade: novaQuant });
-    if (novaQuant === max) {
+    this.setState({
+      disableMinBtn: false,
+      quantidade: this.state.quantidade + 1,
+    });
+    if (this.state.quantidade === max - 1) {
       this.setState({ disableMaxBtn: true });
     }
   }
 
   diminuirUm() {
-    this.setState({ disableMaxBtn: false });
-    const novaQuant = this.state.quantidade - 1;
-    this.setState({ quantidade: novaQuant });
-    if (novaQuant <= 0) {
+    this.setState({
+      disableMaxBtn: false,
+      quantidade: this.state.quantidade - 1,
+    });
+    if (this.state.quantidade < 2) {
       this.setState({ disableMinBtn: true });
     }
   }
@@ -66,7 +70,7 @@ export class Details extends Component {
   }
 
   seletorQuantidade() {
-    const estoqueDisponivel = this.props.location.state.product.available_quantity;
+    const availableQuantity = this.props.location.state.product.available_quantity;
     return (
       <div>
         <label htmlFor="quantidade">Quantidade: </label>
@@ -74,45 +78,50 @@ export class Details extends Component {
           name="quantidade"
           type="number"
           min="0"
-          max={estoqueDisponivel}
+          max={availableQuantity}
           value={this.state.quantidade}
           onChange={this.atualizaQuantidade}
         />
         <button
           disabled={this.state.disableMinBtn}
-          onClick={() => this.diminuirUm(estoqueDisponivel)}
+          onClick={() => this.diminuirUm(availableQuantity)}
         >-
         </button>
         <button
           disabled={this.state.disableMaxBtn}
-          onClick={() => this.adicionarUm(estoqueDisponivel)}
+          onClick={() => this.adicionarUm(availableQuantity)}
         >+
         </button>
-        <button data-testid="product-detail-add-to-cart">Adicionar ao carrinho</button>
       </div>
     );
   }
 
   render() {
-    const { location: { state: { product } } } = this.props;
-    const { price, title, thumbnail, attributes } = product;
+    const { location: { state: { product, cart } } } = this.props;
+    const { id, price, title, thumbnail, attributes } = product;
+    // const availableQuantity = product.available_quantity;
     return (
       <div className="telaDetalhes">
         <div className="cabecalhoProduto">
           <Link to="/">Voltar</Link>
-          <h2 data-testid="product-detail-name">{title} - R$ {price}</h2> {this.freteGratis()}
+          <h2 data-testid="product-detail-name">{title} - R$ {price}</h2>{this.freteGratis()}
+          <CarLink params={{ pathname: '/cart', state: { cart } }} />
         </div>
         <div className="detalhesProduto">
-          <div className="imagemDetalhe">
-            <img src={thumbnail} alt={`Imagem de ${title}`} height="350px" />
-          </div>
+          <img src={thumbnail} alt={`Imagem de ${title}`} height="350px" />
           <div className="especificProduto">
             <h3>Especificações técnicas</h3>
             {attributes.map((att) => <li key={att.name}>{att.name}: {att.value_name}</li>)}
           </div>
         </div>
         {this.seletorQuantidade()}
-        <FormAvaliacao />
+        <button
+          data-testid="product-detail-add-to-cart"
+          // onClick={() => addToCart(title, price, id, thumbnail, availableQuantity)}
+        >
+          Adicionar ao carrinho
+        </button>
+        <FormAvaliacao prodID={id} />
       </div>
     );
   }
