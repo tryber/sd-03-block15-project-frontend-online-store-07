@@ -55,16 +55,40 @@ export class Details extends Component {
   }
 
   contadorCarrinho() {
-    const storedSelectedItems = JSON.parse(
-      localStorage.getItem('cartProducts'),
-    );
-    if (storedSelectedItems) {
+    const itensSelecionados = JSON.parse(localStorage.getItem('cartProducts'));
+    if (itensSelecionados) {
       this.setState({
-        quantidadeCarrinho: storedSelectedItems.reduce(
+        quantidadeCarrinho: itensSelecionados.reduce(
           (acc, item) => acc + parseInt(item.quantity, 10),
           0,
         ),
       });
+    }
+  }
+
+  adicionarAoCarrinho(title, price, id, thumbnail, availableQuantity) {
+    const { selectedItems, cartSize } = this.state;
+    const itemIndex = selectedItems.findIndex((item) => item.id === id);
+    if (itemIndex !== -1) {
+      const updatedCart = selectedItems;
+      updatedCart[itemIndex].quantity += 1;
+      this.setState({ selectedItems: updatedCart });
+      this.setState(() => ({ cartSize: cartSize + 1 }));
+    } else {
+      this.setState({
+        selectedItems: [
+          ...selectedItems,
+          {
+            title,
+            id,
+            price,
+            thumbnail,
+            availableQuantity,
+            quantity: 1,
+          },
+        ],
+      });
+      this.setState(() => ({ cartSize: cartSize + 1 }));
     }
   }
 
