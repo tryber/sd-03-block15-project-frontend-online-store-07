@@ -39,14 +39,15 @@ export class FormAvaliacao extends Component {
 
   secaoAvaliacoes(reviewsLS) {
     const parsedReviews = JSON.parse(reviewsLS);
+    const { prod_id } = this.state;
     return (
       <div>
         <h2>Avaliações</h2>
         {parsedReviews.map((ava) => (
           <ul className="avaliacao">
-            <li key={ava.email}><strong>Usuário:</strong> {ava.email}</li>
-            <li key={ava.nota}><strong>Nota:</strong> {ava.nota}</li>
-            <li key={ava.mensagem}><strong>Mensagem:</strong> {ava.mensagem}</li>
+            <li key={`${prod_id} - Usu`}><strong>Usuário:</strong> {ava.email}</li>
+            <li key={`${prod_id} - Ema`}><strong>Nota:</strong> {ava.nota}</li>
+            <li key={`${prod_id} - Msg`}><strong>Mensagem:</strong> {ava.mensagem}</li>
           </ul>
         ))}
       </div>
