@@ -188,8 +188,7 @@ export class Details extends Component {
   }
 
   botaoAdicionarAoCarrinho() {
-    const {
-      location: { state: { product } } } = this.props;
+    const { location: { state: { product } } } = this.props;
     const { id, price, title, thumbnail, availableQuantity } = product;
     return (
       <button
