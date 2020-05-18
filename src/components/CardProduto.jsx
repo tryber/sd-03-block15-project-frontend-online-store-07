@@ -31,7 +31,7 @@ export class CardProduto extends Component {
   }
 
   render() {
-    const { product } = this.props;
+    const { product, cart } = this.props;
     const {
       id,
       title,
@@ -55,7 +55,7 @@ export class CardProduto extends Component {
         {this.addToCartButton()}
         <Link
           data-testid="product-detail-link"
-          to={{ pathname: `/details/${id}`, state: { product } }}
+          to={{ pathname: `/details/${id}`, state: { product, cart } }}
         >
           Detalhes
         </Link>
