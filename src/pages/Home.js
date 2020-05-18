@@ -89,7 +89,6 @@ class Home extends React.Component {
       });
       this.setState(() => ({ cartSize: cartSize + 1 }));
     }
-    console.log(selectedItems);
   }
 
   cartCounter() {

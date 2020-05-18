@@ -8,6 +8,7 @@ export class Details extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      itensCarrinho: [],
       quantidade: 0,
       comentarios: null,
       disableMinBtn: true,
@@ -16,6 +17,29 @@ export class Details extends Component {
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.adicionarUm = this.adicionarUm.bind(this);
     this.diminuirUm = this.diminuirUm.bind(this);
+  }
+
+  componentDidMount() {
+    this.montaItensCarrinho();
+  }
+
+  montaItensCarrinho() {
+    const { itensCarrinho, quantidade } = this.state;
+    const { location } = this.props;
+    const { state } = location;
+    const { product } = state;
+    const { id } = product;
+    const itensSelecionados = JSON.parse(
+      localStorage.getItem('cartProducts'),
+    );
+    this.setState({ itensCarrinho: itensSelecionados });
+    const itemIndex = itensCarrinho.findIndex((item) => item.id === id);
+    if (itemIndex !== -1) {
+      const updatedCart = itensCarrinho;
+      updatedCart[itemIndex].quantity += quantidade;
+      this.setState({ itensCarrinho: updatedCart });
+      this.setState({ quantidade: updatedCart[itemIndex].quantity });
+    }
   }
 
   atualizaQuantidade(event) {
