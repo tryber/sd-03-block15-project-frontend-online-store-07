@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Card, CardHeader, CardContent, CardActions, Typography, Button } from '@material-ui/core';
 
 export class CardProduto extends Component {
   constructor(props) {
@@ -18,7 +19,8 @@ export class CardProduto extends Component {
       available_quantity: availableQuantity,
     } = product;
     return (
-      <button
+      <Button
+        color="secondary"
         data-testid="product-add-to-cart"
         className="btn btn-link"
         value="Adicionar ao Carrinho"
@@ -26,7 +28,7 @@ export class CardProduto extends Component {
         onClick={() => addToCart(title, price, id, thumbnail, availableQuantity)}
       >
         Adicionar ao Carrinho
-      </button>
+      </Button>
     );
   }
 
@@ -40,25 +42,37 @@ export class CardProduto extends Component {
       available_quantity: availableQuantity,
       shipping: { free_shipping: freeShipping },
     } = product;
+
     return (
       <div data-testid="product">
-        <h4>{title}</h4>
-        <h5>{id}</h5>
-        <img src={thumbnail} alt={title} />
-        <h5>
-          {`Preço: R$ ${price.toFixed(2)}`}
-        </h5>
-        <h5>
-          {`Quantidade disponível: ${availableQuantity}`}
-        </h5>
-        {freeShipping && <h6 data-testid="free-shipping">FRETE GRÁTIS</h6>}
-        {this.addToCartButton()}
-        <Link
-          data-testid="product-detail-link"
-          to={{ pathname: `/details/${id}`, state: { product, cart } }}
-        >
-          Detalhes
-        </Link>
+        <Card>
+          <CardHeader
+            title={title}
+            subheader={id}
+          />
+          <img src={thumbnail} alt={title} />
+          <CardContent>
+            <Typography variant="h6" color="textPrimary" component="">
+              R${price.toFixed(2)}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {freeShipping && <span data-testid="free-shipping">FRETE GRÁTIS</span>}
+              <br/>
+              {`Quantidade disponível: ${availableQuantity}`}
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+              {this.addToCartButton()}
+            <Button size="small" color="secondary">
+              <Link
+              data-testid="product-detail-link"
+              to={{ pathname: `/details/${id}`, state: { product, cart } }}
+              >
+                Detalhes
+              </Link>
+            </Button>
+          </CardActions>
+        </Card>
       </div>
     );
   }

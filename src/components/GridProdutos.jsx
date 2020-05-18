@@ -6,7 +6,7 @@ export class GridProdutos extends Component {
     const { products, addToCart } = this.props;
     if (products.length === 0) return <h1>Nenhum Produto foi encontrado</h1>;
     return (
-      <div>
+      <div className="grid-products">
         {products.map((product) => (
           <CardProduto
             key={product.id}

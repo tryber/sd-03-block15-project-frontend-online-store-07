@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { TextField, Button } from '@material-ui/core';
 
 class BarraPesquisa extends Component {
   constructor(props) {
@@ -22,21 +23,22 @@ class BarraPesquisa extends Component {
     const { query } = this.state;
     return (
       <div>
-        <input
+        <TextField
           data-testid="query-input"
-          placeholder="Insira o caminho da imagem"
+          placeholder="O que deseja pesquisar?"
           id="search-input"
           type="text"
           value={query}
           onChange={this.handleSearchInput}
         />
-        <button
+        <Button
+          color="secondary"
           data-testid="query-button"
           type="button"
           onClick={this.handleSearchSubmit}
         >
           Pesquisar
-        </button>
+        </Button>
       </div>
     );
   }

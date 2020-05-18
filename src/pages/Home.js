@@ -1,5 +1,7 @@
 import React from 'react';
 import { Grid, Container } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import { CarLink } from '../components/CarLink';
 import BarraEsquerda from '../components/BarraEsquerda';
 import { GridProdutos } from '../components/GridProdutos';
@@ -33,9 +35,6 @@ class Home extends React.Component {
 
   componentDidUpdate() {
     const { callAPI, selectedCategory, query } = this.state;
-    console.log(callAPI);
-    console.log(selectedCategory);
-    console.log(query);
     if (callAPI) {
       api
         .getProductsFromCategoryAndQuery(selectedCategory, query)
@@ -79,18 +78,28 @@ class Home extends React.Component {
   render() {
     const { categories, apiResults, selectedCategory, selectedItems, callAPI } = this.state;
     return (
-      <div style={{ flexGrow: 1 }}>
+      <div>
         <Container>
           <Grid container spacing={5}>
-            <Grid item xs={3}>
-              <BarraEsquerda
-                categorias={categories}
-                selectedCategory={selectedCategory}
-                onCategoryChange={(e) => this.categoryChange(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <BarraPesquisa onClick={this.callApi} />
+            <AppBar position="sticky">
+              <Toolbar>
+                <Grid item xs={5}>
+                  <BarraEsquerda
+                    categorias={categories}
+                    selectedCategory={selectedCategory}
+                    onCategoryChange={(e) => this.categoryChange(e.target.value)}
+                  />
+                </Grid>
+                <Grid item>
+                  <BarraPesquisa onClick={this.callApi} />
+                </Grid>
+                <Grid item xs={3}>
+                  <CarLink params={{ pathname: '/cart', state: { selectedItems } }} />
+                </Grid>
+              </Toolbar>
+            </AppBar>
+
+            <Grid item xs={12}> 
               <div>
                 {!apiResults.length ? (
                   <MessagemInicial loading={callAPI} />
@@ -98,9 +107,6 @@ class Home extends React.Component {
                   <GridProdutos products={apiResults} addToCart={this.addToCart} />
                 )}
               </div>
-            </Grid>
-            <Grid item xs={2}>
-              <CarLink params={{ pathname: '/cart', state: { selectedItems } }} />
             </Grid>
           </Grid>
         </Container>

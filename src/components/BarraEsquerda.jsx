@@ -14,6 +14,7 @@ class BarraEsquerda extends Component {
           checked={selectedCategory}
           onChange={onCategoryChange}
         >
+        <option key="0" value=""></option>
         {categorias.map((categoria) => (
           <option key={categoria.id} value={categoria.id}>{categoria.name}</option>
         ))}
