@@ -3,23 +3,17 @@ import Rating from '@material-ui/lab/Rating';
 import '../pages/Details.css';
 
 export class FormAvaliacao extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      prod_id: '',
+      prod_id: this.props.prodID,
       email: '',
       nota: 0,
       mensagem: '',
     };
     this.evtMapper = this.evtMapper.bind(this);
     this.insertReview = this.insertReview.bind(this);
-  }
-
-  componentDidMount() {
-    const { prodID } = this.props;
-    const cookiedReviews = localStorage.getItem(prodID);
-    this.setState({ prod_id: prodID });
-    cookiedReviews ? this.setState({ reviews: cookiedReviews }) : this.setState({ reviews: [] });
+    this.secaoAvaliacoes = this.secaoAvaliacoes.bind(this);
   }
 
   evtMapper(event, name) {

@@ -25,7 +25,7 @@ export class Details extends Component {
   }
 
   adicionarUm(max) {
-    this.setState({ 
+    this.setState({
       disableMinBtn: false,
       quantidade: this.state.quantidade + 1,
     });
@@ -35,7 +35,7 @@ export class Details extends Component {
   }
 
   diminuirUm() {
-    this.setState({ 
+    this.setState({
       disableMaxBtn: false,
       quantidade: this.state.quantidade - 1,
     });
@@ -67,10 +67,6 @@ export class Details extends Component {
       return (<p><LocalShippingIcon />Frete grátis</p>);
     }
     return null;
-  }
-
-  adicionarAoCarrinho() {
-
   }
 
   seletorQuantidade() {
@@ -112,7 +108,7 @@ export class Details extends Component {
           <CarLink params={{ pathname: '/cart', state: { cart } }} />
         </div>
         <div className="detalhesProduto">
-            <img src={thumbnail} alt={`Imagem de ${title}`} height="350px" />
+          <img src={thumbnail} alt={`Imagem de ${title}`} height="350px" />
           <div className="especificProduto">
             <h3>Especificações técnicas</h3>
             {attributes.map((att) => <li key={att.name}>{att.name}: {att.value_name}</li>)}
@@ -125,7 +121,7 @@ export class Details extends Component {
         >
           Adicionar ao carrinho
         </button>
-        <FormAvaliacao prodID={id}/>
+        <FormAvaliacao prodID={id} />
       </div>
     );
   }

@@ -89,9 +89,9 @@ class Home extends React.Component {
               <BarraPesquisa onClick={this.callApi} />
               <div>
                 {!apiResults.length ? (
-                  <MessagemInicial loading={callAPI}/>
+                  <MessagemInicial loading={callAPI} />
                 ) : (
-                  <GridProdutos products={apiResults} addToCart={this.addToCart} cart={this.state.selectedItems} />
+                  <GridProdutos products={apiResults} addToCart={this.addToCart} />
                 )}
               </div>
             </Grid>
