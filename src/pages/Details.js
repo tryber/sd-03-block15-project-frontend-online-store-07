@@ -21,7 +21,7 @@ export class Details extends Component {
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.adicionarUm = this.adicionarUm.bind(this);
     this.diminuirUm = this.diminuirUm.bind(this);
-    // this.adicionarAoCarrinho = this.adicionarAoCarrinho.bind(this);
+    this.adicionarAoCarrinho = this.adicionarAoCarrinho.bind(this);
   }
 
   componentDidMount() {
@@ -70,6 +70,7 @@ export class Details extends Component {
   }
 
   adicionarAoCarrinho(title, price, id, thumbnail, availableQuantity) {
+    console.log('adicionarAoCarrinho');
     const { itensCarrinho, quantidadeCarrinho, quantidade } = this.state;
     const itemIndex = itensCarrinho.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
@@ -186,17 +187,17 @@ export class Details extends Component {
     );
   }
 
-  // botãoAdicionaraoCarrinho() {
-  //   return (
-  //     <button
-  //       data-testid="product-detail-add-to-cart"
-  //       type="button"
-  //       onClick={this.adicionarAoCarrinho}
-  //     >
-  //       Adicionar ao carrinho
-  //     </button>
-  //   );
-  // }
+  botaoAdicionarAoCarrinho() {
+    return (
+      <button
+        data-testid="product-detail-add-to-cart"
+        type="button"
+        onClick={this.adicionarAoCarrinho}
+      >
+        Adicionar ao carrinho
+      </button>
+    );
+  }
 
   render() {
     const { quantidadeCarrinho } = this.state;
@@ -228,7 +229,7 @@ export class Details extends Component {
           </div>
         </div>
         {this.seletorQuantidade()}
-        {/* {this.adicionarAoCarrinho()} */}
+        {this.botaoAdicionarAoCarrinho()}
         <FormAvaliacao prodID={id} />
       </div>
     );
