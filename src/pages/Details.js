@@ -138,23 +138,12 @@ export class Details extends Component {
     return null;
   }
 
-  seletorQuantidade() {
+  buttonsMinandMax() {
     const { location: { state: { product } } } = this.props;
     const { available_quantity: availableQuantity } = product;
-    const { disableMinBtn, disableMaxBtn, quantidade } = this.state;
+    const { disableMinBtn, disableMaxBtn } = this.state;
     return (
       <div>
-        <label htmlFor="quantidade">
-          Quantidade:
-          <input
-            id="quantidade"
-            type="number"
-            min="0"
-            max={availableQuantity}
-            value={quantidade}
-            onChange={this.atualizaQuantidade}
-          />
-        </label>
         <button
           type="button"
           disabled={disableMinBtn}
@@ -169,6 +158,28 @@ export class Details extends Component {
         >
           +
         </button>
+      </div>
+    );
+  }
+
+  seletorQuantidade() {
+    const { location: { state: { product } } } = this.props;
+    const { disableMinBtn, disableMaxBtn, quantidade } = this.state;
+     const { available_quantity: availableQuantity } = product;
+    return (
+      <div>
+        <label htmlFor="quantidade">
+          Quantidade:
+          <input
+            id="quantidade"
+            type="number"
+            min="0"
+            max={availableQuantity}
+            value={quantidade}
+            onChange={this.atualizaQuantidade}
+          />
+        </label>
+        {this.buttonsMinandMax()}
       </div>
     );
   }
