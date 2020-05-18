@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import FormAvaliacao from '../components/FormAvaliacao';
+import { BotaoRetorno } from '../components/BotaoRetorno';
+import { FormAvaliacao } from '../components/FormAvaliacao';
 import './Details.css';
 
 export class Details extends Component {
@@ -23,8 +23,9 @@ export class Details extends Component {
   }
 
   adicionarUm(max) {
+    const { quantidade } = this.state;
     this.setState({ disableMinBtn: false });
-    const novaQuant = this.state.quantidade + 1;
+    const novaQuant = quantidade + 1;
     this.setState({ quantidade: novaQuant });
     if (novaQuant === max) {
       this.setState({ disableMaxBtn: true });
@@ -32,63 +33,69 @@ export class Details extends Component {
   }
 
   diminuirUm() {
+    const { quantidade } = this.state;
     this.setState({ disableMaxBtn: false });
-    const novaQuant = this.state.quantidade - 1;
+    const novaQuant = quantidade - 1;
     this.setState({ quantidade: novaQuant });
     if (novaQuant <= 0) {
       this.setState({ disableMinBtn: true });
     }
   }
 
-  // Código antigo (uma função no lugar de duas, mas bloated AF e ainda com bugs)
-  // alteraQuantidade(soma, max) {
-  //   this.setState((currentState) => {
-  //     const novaQuant = (soma ? currentState.quantidade + 1 : currentState.quantidade - 1);
-  //     if (novaQuant > max) {
-  //       return ({
-  //         disableMaxBtn: true,
-  //         disableMinBtn: false});
-  //       }
-  //     if (novaQuant < 1) {
-  //       return ({
-  //         disableMaxBtn: false,
-  //         disableMinBtn: true});
-  //     }
-  //     return({quantidade: novaQuant});
-  //   });
-  // }
-
   freteGratis() {
-    if (this.props.location.state.product.shipping.free_shipping) {
-      return (<p><LocalShippingIcon />Frete grátis</p>);
+    const { location } = this.props;
+    const { state } = location;
+    const { product } = state;
+    const { shipping } = product;
+    const { free_shipping: freeShipping } = shipping;
+    if (freeShipping) {
+      return (
+        <p>
+          <LocalShippingIcon />
+          Frete grátis
+        </p>
+      );
     }
     return null;
   }
 
   seletorQuantidade() {
-    const estoqueDisponivel = this.props.location.state.product.available_quantity;
+    const { location } = this.props;
+    const { state } = location;
+    const { product } = state;
+    const { available_quantity: availableQuantity } = product;
+    const estoqueDisponivel = availableQuantity;
+    const { disableMinBtn, disableMaxBtn, quantidade } = this.state;
     return (
       <div>
-        <label htmlFor="quantidade">Quantidade: </label>
-        <input
-          name="quantidade"
-          type="number"
-          min="0"
-          max={estoqueDisponivel}
-          value={this.state.quantidade}
-          onChange={this.atualizaQuantidade}
-        />
+        <label htmlFor="quantidade">
+          Quantidade:
+          <input
+            id="quantidade"
+            type="number"
+            min="0"
+            max={estoqueDisponivel}
+            value={quantidade}
+            onChange={this.atualizaQuantidade}
+          />
+        </label>
         <button
-          disabled={this.state.disableMinBtn}
+          type="button"
+          disabled={disableMinBtn}
           onClick={() => this.diminuirUm(estoqueDisponivel)}
-        >-
+        >
+          -
         </button>
         <button
-          disabled={this.state.disableMaxBtn}
+          type="button"
+          disabled={disableMaxBtn}
           onClick={() => this.adicionarUm(estoqueDisponivel)}
-        >+
+        >
+          +
         </button>
-        <button data-testid="product-detail-add-to-cart">Adicionar ao carrinho</button>
+        <button data-testid="product-detail-add-to-cart" type="button">
+          Adicionar ao carrinho
+        </button>
       </div>
     );
   }
@@ -99,8 +106,11 @@ export class Details extends Component {
     return (
       <div className="telaDetalhes">
         <div className="cabecalhoProduto">
-          <Link to="/">Voltar</Link>
-          <h2 data-testid="product-detail-name">{title} - R$ {price}</h2> {this.freteGratis()}
+          <BotaoRetorno />
+          <h2 data-testid="product-detail-name">
+            {title} - R$ {price}
+          </h2>
+          {this.freteGratis()}
         </div>
         <div className="detalhesProduto">
           <div className="imagemDetalhe">
@@ -108,7 +118,11 @@ export class Details extends Component {
           </div>
           <div className="especificProduto">
             <h3>Especificações técnicas</h3>
-            {attributes.map((att) => <li key={att.name}>{att.name}: {att.value_name}</li>)}
+            {attributes.map((att) => (
+              <li key={att.name}>
+                {att.name}: {att.value_name}
+              </li>
+            ))}
           </div>
         </div>
         {this.seletorQuantidade()}
