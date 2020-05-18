@@ -164,6 +164,7 @@ export class Details extends Component {
 
   seletorQuantidade() {
     const { location: { state: { product } } } = this.props;
+    const { quantidade } = this.state;
     const { available_quantity: availableQuantity } = product;
     return (
       <div>
