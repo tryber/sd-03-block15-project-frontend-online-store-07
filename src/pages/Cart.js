@@ -1,5 +1,5 @@
 import React from 'react';
-import { BotãoRetorno } from '../components/BotaoRetorno';
+import { BotaoRetorno } from '../components/BotaoRetorno';
 import { CardCarrinho } from '../components/CardCarrinho';
 import { CheckoutCartButton } from '../components/CheckoutCartButton';
 import MensagemCarrinho from '../components/MensagemCarrinho';
@@ -44,7 +44,7 @@ class Cart extends React.Component {
     if (cartProducts && cartProducts.length !== 0) {
       return (
         <div>
-          <BotãoRetorno />
+          <BotaoRetorno />
           <div>
             <h2>Carrinho de compras: </h2>
             {cartProducts.map((product) => (
@@ -58,7 +58,7 @@ class Cart extends React.Component {
     }
     return (
       <div>
-        <BotãoRetorno />
+        <BotaoRetorno />
         <MensagemCarrinho />
       </div>
     );

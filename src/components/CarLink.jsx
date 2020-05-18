@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export class CarLink extends Component {
   render() {
-    const { params, size } = this.props;
+    const { size } = this.props;
     return (
       <div>
         <Link data-testid="shopping-cart-button" to="/cart">
