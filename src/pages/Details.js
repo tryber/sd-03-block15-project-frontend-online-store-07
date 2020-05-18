@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import { CarLink } from "../components/CarLink";
+import { CarLink } from '../components/CarLink';
 import { BotaoRetorno } from '../components/BotaoRetorno';
 import { FormAvaliacao } from '../components/FormAvaliacao';
 import './Details.css';
@@ -30,6 +30,10 @@ export class Details extends Component {
     this.contadorCarrinho();
   }
 
+  componentDidUpdate() {
+    this.atualizaCarrinho();
+  }
+
   montaItensCarrinho() {
     const { itensCarrinho, quantidade } = this.state;
     const { location } = this.props;
@@ -43,6 +47,11 @@ export class Details extends Component {
       this.setState({ itensCarrinho: updatedCart });
       this.setState({ quantidade: updatedCart[itemIndex].quantity });
     }
+  }
+
+  atualizaCarrinho() {
+    const { itensCarrinho } = this.state;
+    localStorage.setItem('cartProducts', JSON.stringify(itensCarrinho));
   }
 
   contadorCarrinho() {
