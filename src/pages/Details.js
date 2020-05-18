@@ -90,10 +90,10 @@ export class Details extends Component {
             price,
             thumbnail,
             availableQuantity,
-            quantity: quantidade,
+            quantity: (quantidade || 1),
           },
         ],
-        quantidadeCarrinho: quantidadeCarrinho + quantidade,
+        quantidadeCarrinho: quantidadeCarrinho + (quantidade || 1),
       });
     }
   }
