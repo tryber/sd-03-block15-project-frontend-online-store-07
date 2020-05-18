@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import { CarLink } from "../components/CarLink";
 import { BotaoRetorno } from '../components/BotaoRetorno';
 import { FormAvaliacao } from '../components/FormAvaliacao';
 import './Details.css';
@@ -7,9 +8,13 @@ import './Details.css';
 export class Details extends Component {
   constructor(props) {
     super(props);
+
+    const itensSelecionados = JSON.parse(localStorage.getItem('cartProducts'));
+
     this.state = {
-      itensCarrinho: [],
+      itensCarrinho: [...itensSelecionados],
       quantidade: 0,
+      quantidadeCarrinho: 0,
       comentarios: null,
       disableMinBtn: true,
       disableMaxBtn: false,
@@ -22,6 +27,7 @@ export class Details extends Component {
 
   componentDidMount() {
     this.montaItensCarrinho();
+    this.contadorCarrinho();
   }
 
   montaItensCarrinho() {
@@ -30,16 +36,26 @@ export class Details extends Component {
     const { state } = location;
     const { product } = state;
     const { id } = product;
-    const itensSelecionados = JSON.parse(
-      localStorage.getItem('cartProducts'),
-    );
-    this.setState({ itensCarrinho: itensSelecionados });
     const itemIndex = itensCarrinho.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
       const updatedCart = itensCarrinho;
       updatedCart[itemIndex].quantity += quantidade;
       this.setState({ itensCarrinho: updatedCart });
       this.setState({ quantidade: updatedCart[itemIndex].quantity });
+    }
+  }
+
+  contadorCarrinho() {
+    const storedSelectedItems = JSON.parse(
+      localStorage.getItem('cartProducts'),
+    );
+    if (storedSelectedItems) {
+      this.setState({
+        quantidadeCarrinho: storedSelectedItems.reduce(
+          (acc, item) => acc + parseInt(item.quantity, 10),
+          0,
+        ),
+      });
     }
   }
 
@@ -127,12 +143,18 @@ export class Details extends Component {
   }
 
   render() {
-    const { location: { state: { product, cart } } } = this.props;
+    const { quantidadeCarrinho } = this.state;
+    const {
+      location: {
+        state: { product },
+      },
+    } = this.props;
     const { id, price, title, thumbnail, attributes } = product;
     return (
       <div className="telaDetalhes">
         <div className="cabecalhoProduto">
           <BotaoRetorno />
+          <CarLink size={quantidadeCarrinho} />
           <h2 data-testid="product-detail-name">
             {title} - R$ {price}
           </h2>
