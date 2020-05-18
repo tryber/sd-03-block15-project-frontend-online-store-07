@@ -164,8 +164,7 @@ export class Details extends Component {
 
   seletorQuantidade() {
     const { location: { state: { product } } } = this.props;
-    const { disableMinBtn, disableMaxBtn, quantidade } = this.state;
-     const { available_quantity: availableQuantity } = product;
+    const { available_quantity: availableQuantity } = product;
     return (
       <div>
         <label htmlFor="quantidade">
