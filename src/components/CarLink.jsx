@@ -8,7 +8,7 @@ export class CarLink extends Component {
     return (
       <div>
         <Link data-testid="shopping-cart-button" to="/cart">
-          <ShoppingCartIcon color="action"/>
+          <ShoppingCartIcon color="action" />
         </Link>
         <span data-testid="shopping-cart-size">{size}</span>
       </div>

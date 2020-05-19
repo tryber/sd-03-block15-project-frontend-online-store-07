@@ -10,7 +10,7 @@ import {
   CardMedia,
 } from '@material-ui/core';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import './CardProduto.css'
+import './CardProduto.css';
 
 export class CardProduto extends Component {
   constructor(props) {
@@ -36,9 +36,7 @@ export class CardProduto extends Component {
         color="default"
         variant="contained"
         type="button"
-        onClick={() =>
-          addToCart(title, price, id, thumbnail, availableQuantity)
-        }
+        onClick={() => addToCart(title, price, id, thumbnail, availableQuantity)}
       >
         Adicionar ao Carrinho
       </Button>
@@ -47,12 +45,7 @@ export class CardProduto extends Component {
 
   cardContent() {
     const { product } = this.props;
-    const {
-      id,
-      title,
-      price,
-      available_quantity: availableQuantity,
-      shipping: { free_shipping: freeShipping },
+    const { id, title, price, available_quantity: availableQuantity, shipping: { free_shipping: freeShipping },
     } = product;
     return (
       <CardContent classes={{ root: 'product-card' }}>
@@ -62,11 +55,7 @@ export class CardProduto extends Component {
         <Typography gutterBottom color="textPrimary" variant="h5">
           {title}
         </Typography>
-        <Typography
-          color="textPrimary"
-          variant="subtitle2"
-          gutterBottom
-        >{`Preço: R$ ${price.toFixed(2)}`}</Typography>
+        <Typography color="textPrimary" variant="subtitle2" gutterBottom>{`Preço: R$ ${price.toFixed(2)}`}</Typography>
         {freeShipping && (
           <Typography
             gutterBottom
@@ -78,11 +67,7 @@ export class CardProduto extends Component {
             Frete grátis
           </Typography>
         )}
-        <Typography
-          gutterBottom
-          color="textPrimary"
-          variant="caption"
-        >{`Quantidade disponível: ${availableQuantity}`}</Typography>
+        <Typography gutterBottom color="textPrimary" variant="caption">{`Quantidade disponível: ${availableQuantity}`}</Typography>
       </CardContent>
     );
   }
