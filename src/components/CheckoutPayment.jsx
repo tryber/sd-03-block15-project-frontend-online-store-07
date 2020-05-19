@@ -22,13 +22,7 @@ export default function PaymentForm() {
           <TextField required id="expDate" label="Expiry date" fullWidth />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cvv"
-            label="CVV"
-            helperText="Last three digits on signature strip"
-            fullWidth
-          />
+          <TextField required id="cvv" label="CVV" helperText="Last three digits on signature strip" fullWidth />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel
