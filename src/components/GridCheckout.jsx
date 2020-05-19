@@ -11,6 +11,7 @@ export class GridCheckout extends Component {
             <h4>{product.title}</h4>
             <h5>{product.id}</h5>
             <img src={product.thumbnail} alt={product.title} />
+            <h6>Quantidade : {product.quantity}</h6>
             <h5>
               {`Preço: R$ ${product.price.toFixed(2)}`}
             </h5>

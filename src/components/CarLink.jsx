@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 export class CarLink extends Component {
   render() {
-    const { params } = this.props;
+    const { size } = this.props;
     return (
-      <Link data-testid="shopping-cart-button" to={params}>
-        <i className="fas fa-shopping-cart" />
-      </Link>
+      <div>
+        <Link data-testid="shopping-cart-button" to="/cart">
+          <ShoppingCartIcon color="action" />
+        </Link>
+        <span data-testid="shopping-cart-size">{size}</span>
+      </div>
     );
   }
 }

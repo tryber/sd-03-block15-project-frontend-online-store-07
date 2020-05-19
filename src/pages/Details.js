@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import FormAvaliacao from '../components/FormAvaliacao';
-import CarLink from '../components/CarLink';
+import { CarLink } from '../components/CarLink';
+import { BotaoRetorno } from '../components/BotaoRetorno';
+import { FormAvaliacao } from '../components/FormAvaliacao';
 import './Details.css';
 
 export class Details extends Component {
   constructor(props) {
     super(props);
+
+    const itensSelecionados = JSON.parse(localStorage.getItem('cartProducts'));
+
     this.state = {
+      itensCarrinho: [...itensSelecionados],
       quantidade: 0,
+      quantidadeCarrinho: 0,
       comentarios: null,
       disableMinBtn: true,
       disableMaxBtn: false,
@@ -18,6 +23,79 @@ export class Details extends Component {
     this.atualizaQuantidade = this.atualizaQuantidade.bind(this);
     this.adicionarUm = this.adicionarUm.bind(this);
     this.diminuirUm = this.diminuirUm.bind(this);
+    this.adicionarAoCarrinho = this.adicionarAoCarrinho.bind(this);
+  }
+
+  componentDidMount() {
+    this.montaItensCarrinho();
+    this.contadorCarrinho();
+  }
+
+  componentDidUpdate() {
+    this.atualizaCarrinho();
+  }
+
+  montaItensCarrinho() {
+    const { itensCarrinho, quantidade } = this.state;
+    const { location } = this.props;
+    const { state } = location;
+    const { product } = state;
+    const { id } = product;
+    const itemIndex = itensCarrinho.findIndex((item) => item.id === id);
+    if (itemIndex !== -1) {
+      const updatedCart = itensCarrinho;
+      updatedCart[itemIndex].quantity += quantidade;
+      this.setState({ itensCarrinho: updatedCart });
+      this.setState({ quantidade: updatedCart[itemIndex].quantity });
+      console.log(updatedCart[itemIndex].quantity);
+    }
+    console.log(itemIndex);
+    console.log(itensCarrinho);
+  }
+
+  atualizaCarrinho() {
+    const { itensCarrinho } = this.state;
+    localStorage.setItem('cartProducts', JSON.stringify(itensCarrinho));
+  }
+
+  contadorCarrinho() {
+    const itensSelecionados = JSON.parse(localStorage.getItem('cartProducts'));
+    if (itensSelecionados) {
+      this.setState({
+        quantidadeCarrinho: itensSelecionados.reduce(
+          (acc, item) => acc + parseInt(item.quantity, 10),
+          0,
+        ),
+      });
+    }
+  }
+
+  adicionarAoCarrinho(title, price, id, thumbnail, availableQuantity) {
+    const { itensCarrinho, quantidadeCarrinho, quantidade } = this.state;
+    const itemIndex = itensCarrinho.findIndex((item) => item.id === id);
+    if (itemIndex !== -1) {
+      const updatedCart = itensCarrinho;
+      updatedCart[itemIndex].quantity = quantidade;
+      this.setState({
+        itensCarrinho: updatedCart,
+        quantidadeCarrinho: Number(quantidadeCarrinho) + Number(quantidade),
+      });
+    } else {
+      this.setState({
+        itensCarrinho: [
+          ...itensCarrinho,
+          {
+            title,
+            id,
+            price,
+            thumbnail,
+            availableQuantity,
+            quantity: (quantidade || 1),
+          },
+        ],
+        quantidadeCarrinho: quantidadeCarrinho + (quantidade || 1),
+      });
+    }
   }
 
   atualizaQuantidade(event) {
@@ -25,102 +103,131 @@ export class Details extends Component {
   }
 
   adicionarUm(max) {
-    this.setState({
+    const { quantidade } = this.state;
+    this.setState(() => ({
       disableMinBtn: false,
-      quantidade: this.state.quantidade + 1,
-    });
-    if (this.state.quantidade === max - 1) {
+      quantidade: quantidade + 1,
+    }));
+    if (quantidade === max - 1) {
       this.setState({ disableMaxBtn: true });
     }
   }
 
   diminuirUm() {
-    this.setState({
-      disableMaxBtn: false,
-      quantidade: this.state.quantidade - 1,
-    });
-    if (this.state.quantidade < 2) {
+    const { quantidade } = this.state;
+    this.setState(() => ({
+      disableMinBtn: false,
+      quantidade: quantidade - 1,
+    }));
+    if (quantidade < 2) {
       this.setState({ disableMinBtn: true });
     }
   }
 
-  // Código antigo (uma função no lugar de duas, mas bloated AF e ainda com bugs)
-  // alteraQuantidade(soma, max) {
-  //   this.setState((currentState) => {
-  //     const novaQuant = (soma ? currentState.quantidade + 1 : currentState.quantidade - 1);
-  //     if (novaQuant > max) {
-  //       return ({
-  //         disableMaxBtn: true,
-  //         disableMinBtn: false});
-  //       }
-  //     if (novaQuant < 1) {
-  //       return ({
-  //         disableMaxBtn: false,
-  //         disableMinBtn: true});
-  //     }
-  //     return({quantidade: novaQuant});
-  //   });
-  // }
-
   freteGratis() {
-    if (this.props.location.state.product.shipping.free_shipping) {
-      return (<p><LocalShippingIcon />Frete grátis</p>);
+    const { location } = this.props;
+    const { state } = location;
+    const { product } = state;
+    const { shipping } = product;
+    const { free_shipping: freeShipping } = shipping;
+    if (freeShipping) {
+      return (
+        <p>
+          <LocalShippingIcon />
+          Frete grátis
+        </p>
+      );
     }
     return null;
   }
 
-  seletorQuantidade() {
-    const availableQuantity = this.props.location.state.product.available_quantity;
+  buttonsMinandMax() {
+    const { location: { state: { product } } } = this.props;
+    const { available_quantity: availableQuantity } = product;
+    const { disableMinBtn, disableMaxBtn } = this.state;
     return (
       <div>
-        <label htmlFor="quantidade">Quantidade: </label>
-        <input
-          name="quantidade"
-          type="number"
-          min="0"
-          max={availableQuantity}
-          value={this.state.quantidade}
-          onChange={this.atualizaQuantidade}
-        />
         <button
-          disabled={this.state.disableMinBtn}
+          type="button"
+          disabled={disableMinBtn}
           onClick={() => this.diminuirUm(availableQuantity)}
-        >-
+        >
+          -
         </button>
         <button
-          disabled={this.state.disableMaxBtn}
+          type="button"
+          disabled={disableMaxBtn}
           onClick={() => this.adicionarUm(availableQuantity)}
-        >+
+        >
+          +
         </button>
       </div>
     );
   }
 
+  seletorQuantidade() {
+    const { location: { state: { product } } } = this.props;
+    const { quantidade } = this.state;
+    const { available_quantity: availableQuantity } = product;
+    return (
+      <div>
+        <label htmlFor="quantidade">
+          Quantidade:
+          <input
+            id="quantidade"
+            type="number"
+            min="1"
+            max={availableQuantity}
+            value={quantidade}
+            onChange={this.atualizaQuantidade}
+          />
+        </label>
+        {this.buttonsMinandMax()}
+      </div>
+    );
+  }
+
+  botaoAdicionarAoCarrinho() {
+    const { location: { state: { product } } } = this.props;
+    const { id, price, title, thumbnail, available_quantity } = product;
+    return (
+      <button
+        data-testid="product-detail-add-to-cart"
+        type="button"
+        onClick={() => this.adicionarAoCarrinho(title, price, id, thumbnail, available_quantity)}
+      >
+        Adicionar ao carrinho
+      </button>
+    );
+  }
+
   render() {
-    const { location: { state: { product, cart } } } = this.props;
+    const { quantidadeCarrinho } = this.state;
+    const { location: { state: { product } } } = this.props;
     const { id, price, title, thumbnail, attributes } = product;
-    // const availableQuantity = product.available_quantity;
     return (
       <div className="telaDetalhes">
         <div className="cabecalhoProduto">
-          <Link to="/">Voltar</Link>
-          <h2 data-testid="product-detail-name">{title} - R$ {price}</h2>{this.freteGratis()}
-          <CarLink params={{ pathname: '/cart', state: { cart } }} />
+          <BotaoRetorno />
+          <CarLink size={quantidadeCarrinho} />
+          <h2 data-testid="product-detail-name">
+            {title} - R$ {price}
+          </h2>
+          {this.freteGratis()}
         </div>
         <div className="detalhesProduto">
           <img src={thumbnail} alt={`Imagem de ${title}`} height="350px" />
           <div className="especificProduto">
             <h3>Especificações técnicas</h3>
-            {attributes.map((att) => <li key={att.name}>{att.name}: {att.value_name}</li>)}
+            {attributes.map((att) => (
+              <li key={att.name}>
+                {att.name}: {att.value_name}
+              </li>
+            ))}
           </div>
         </div>
         {this.seletorQuantidade()}
-        <button
-          data-testid="product-detail-add-to-cart"
-          // onClick={() => addToCart(title, price, id, thumbnail, availableQuantity)}
-        >
-          Adicionar ao carrinho
-        </button>
+        {this.botaoAdicionarAoCarrinho()}
         <FormAvaliacao prodID={id} />
       </div>
     );

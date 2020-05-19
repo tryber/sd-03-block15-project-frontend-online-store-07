@@ -15,6 +15,7 @@ class Home extends React.Component {
       apiResults: [],
       categories: [],
       selectedItems: [],
+      cartSize: 0,
       selectedCategory: '',
       query: '',
       callAPI: false,
@@ -22,9 +23,12 @@ class Home extends React.Component {
     this.callApi = this.callApi.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.categoryChange = this.categoryChange.bind(this);
+    this.cartCounter = this.cartCounter.bind(this);
   }
 
   componentDidMount() {
+    this.loadSelectedItems();
+    this.cartCounter();
     return api
       .getCategories()
       .then((data) => this.setState({ categories: data }))
@@ -41,6 +45,7 @@ class Home extends React.Component {
           callAPI: false,
         }));
     }
+    this.updateSelectItems();
   }
 
   callApi(query) {
@@ -54,13 +59,28 @@ class Home extends React.Component {
     });
   }
 
-  addToCart(title, price, id, thumbnail, availableQuantity) {
+  updateSelectItems() {
     const { selectedItems } = this.state;
+    localStorage.setItem('cartProducts', JSON.stringify(selectedItems));
+  }
+
+  loadSelectedItems() {
+    const storedSelectedItems = JSON.parse(
+      localStorage.getItem('cartProducts'),
+    );
+    if (storedSelectedItems !== null) {
+      this.setState({ selectedItems: storedSelectedItems });
+    }
+  }
+
+  addToCart(title, price, id, thumbnail, availableQuantity) {
+    const { selectedItems, cartSize } = this.state;
     const itemIndex = selectedItems.findIndex((item) => item.id === id);
     if (itemIndex !== -1) {
       const updatedCart = selectedItems;
       updatedCart[itemIndex].quantity += 1;
       this.setState({ selectedItems: updatedCart });
+      this.setState(() => ({ cartSize: cartSize + 1 }));
     } else {
       this.setState({
         selectedItems: [
@@ -68,12 +88,26 @@ class Home extends React.Component {
           { title, id, price, thumbnail, availableQuantity, quantity: 1 },
         ],
       });
+      this.setState(() => ({ cartSize: cartSize + 1 }));
     }
-    console.log(selectedItems);
+  }
+
+  cartCounter() {
+    const storedSelectedItems = JSON.parse(
+      localStorage.getItem('cartProducts'),
+    );
+    if (storedSelectedItems) {
+      this.setState({
+        cartSize: storedSelectedItems.reduce(
+          (acc, item) => acc + parseInt(item.quantity, 10),
+          0,
+        ),
+      });
+    }
   }
 
   render() {
-    const { categories, apiResults, selectedCategory, selectedItems, callAPI } = this.state;
+    const { categories, apiResults, selectedCategory, cartSize, callAPI } = this.state;
     return (
       <div style={{ flexGrow: 1 }}>
         <Container>
@@ -96,7 +130,7 @@ class Home extends React.Component {
               </div>
             </Grid>
             <Grid item xs={2}>
-              <CarLink params={{ pathname: '/cart', state: { selectedItems } }} />
+              <CarLink size={cartSize} />
             </Grid>
           </Grid>
         </Container>
