@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Grid, GridList } from '@material-ui/core/';
+import { Grid } from '@material-ui/core/';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -39,59 +41,37 @@ class CheckoutForm extends Component {
     });
   }
 
-  payments() {
-    const { paymentMethod } = this.state;
-    return (
-      <div>
-        <label htmlFor="payment-method">
-          Método de pagamento
-          <select id="payment-method" value={paymentMethod} onChange={(e) => this.handleChange(e, 'payment-method')}>
-            <option value="credit-card">Cartão de Credíto</option>
-            <option value="debit-card">Cartão de Débito</option>
-            <option value="billet">Boleto Bancário</option>
-          </select>
-        </label>
-      </div>
-    );
-  }
-
   personalInfo() {
     const { fullname, email, cpf, phone } = this.state;
     return (
-      <div>
-        <label htmlFor="name">
-          Nome completo
-          <input type="text" required data-testid="checkout-fullname" id="name" value={fullname} onChange={(e) => this.handleChange(e, 'fullname')} />
-        </label>
-        <label htmlFor="email">
-          Email
-          <input type="email" required data-testid="checkout-email" id="email" value={email} onChange={(e) => this.handleChange(e, 'email')} />
-        </label>
-        <label htmlFor="cpf">
-          CPF
-          <input type="text" required data-testid="checkout-cpf" id="cpf" value={cpf} onChange={(e) => this.handleChange(e, 'cpf')} />
-        </label>
-        <label htmlFor="telefone">
-          Telefone
-          <input type="text" required data-testid="checkout-phone" id="telefone" value={phone} onChange={(e) => this.handleChange(e, 'phone')} />
-        </label>
-      </div>
+      <React.Fragment>
+        <Grid item xs={12}>
+          <TextField label="Nome completo" fullWidth type="text" required data-testid="checkout-fullname" id="name" value={fullname} onChange={(e) => this.handleChange(e, 'fullname')} />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField label="Email" type="email" required data-testid="checkout-email" id="email" value={email} onChange={(e) => this.handleChange(e, 'email')} />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField label="CPF" type="text" required data-testid="checkout-cpf" id="cpf" value={cpf} onChange={(e) => this.handleChange(e, 'cpf')} />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField label="Telefone" type="text" required data-testid="checkout-phone" id="telefone" value={phone} onChange={(e) => this.handleChange(e, 'phone')} />
+        </Grid>
+      </React.Fragment>
     );
   }
 
   adressInfo() {
     const { cep, adress } = this.state;
     return (
-      <div>
-        <label htmlFor="cep">
-          CEP
-          <input type="text" required data-testid="checkout-cep" id="cep" value={cep} onChange={(e) => this.handleChange(e, 'cep')} />
-        </label>
-        <label htmlFor="endereco">
-          Endereço
-          <input type="text" required data-testid="checkout-address" id="endereco" value={adress} onChange={(e) => this.handleChange(e, 'adress')} />
-        </label>
-      </div>
+      <React.Fragment>
+        <Grid item xs={12} sm={6}>
+          <TextField label="CEP" type="text" required data-testid="checkout-cep" id="cep" value={cep} onChange={(e) => this.handleChange(e, 'cep')} />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField label="Endereço" fullWidth type="text" required data-testid="checkout-address" id="endereco" value={adress} onChange={(e) => this.handleChange(e, 'adress')} />
+        </Grid>
+      </React.Fragment>
     );
   }
 
@@ -99,22 +79,15 @@ class CheckoutForm extends Component {
     const { redirect } = this.state;
     if (redirect) return <Redirect to="/" />;
     return (
-      <div style={{ flexGrow: 1 }}>
-        <form onSubmit={this.handleSubmit}>
-          <GridList cellHeight={90} cols={1}>
-            {this.payments()}
-            <Grid item xs={8}>
-              {this.personalInfo()}
-            </Grid>
-            <Grid item xs={6}>
-              {this.adressInfo()}
-            </Grid>
-          </GridList>
-          <div>
-            <button type="submit">Finalizar Compra</button>
-          </div>
-        </form>
-      </div>
+      <React.Fragment>
+        <Grid container spacing={3}>
+          <Typography variant="h6" gutterBottom>
+            Informações de Entrega
+          </Typography>
+          {this.personalInfo()}
+          {this.adressInfo()}
+        </Grid>
+      </React.Fragment>
     );
   }
 }
