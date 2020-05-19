@@ -14,6 +14,13 @@ export class CardCarrinho extends Component {
     this.handleQuantity = this.handleQuantity.bind(this);
   }
 
+  componentDidUpdate() {
+    const carrinhoLS = JSON.parse(localStorage.getItem('cartProducts'));
+    const indItem = carrinhoLS.findIndex((item) => item.id === this.props.product.id);
+    carrinhoLS[indItem].quantity = this.state.quantity;
+    localStorage.setItem('cartProducts', JSON.stringify(carrinhoLS));
+  }
+
   updateQuantity(event) {
     this.setState({ quantity: event.target.value });
   }
@@ -38,18 +45,19 @@ export class CardCarrinho extends Component {
       <div>
         <button
           type="button"
+          data-testid="product-decrease-quantity"
+          onClick={() => this.handleQuantity(false, availableQuantity)}
+          disabled={quantity < 1}
+        >
+          -
+        </button>
+        <button
+          type="button"
           data-testid="product-increase-quantity"
           onClick={() => this.handleQuantity(true, availableQuantity)}
           disabled={quantity === availableQuantity}
         >
           +
-        </button>
-        <button
-          type="button"
-          data-testid="product-decrease-quantity"
-          onClick={() => this.handleQuantity(false, availableQuantity)}
-        >
-          -
         </button>
       </div>
     );
@@ -58,24 +66,21 @@ export class CardCarrinho extends Component {
   render() {
     const { quantity } = this.state;
     const { product } = this.props;
-    const { title, thumbnail, price, id, availableQuantity } = product;
+    const { title, price, thumbnail, id, availableQuantity } = product;
     return (
-      <div>
-        <p>{id}</p>
-        <div>
-          <img src={thumbnail} alt={title} />
-        </div>
+      <div key={id}>
         <div data-testid="shopping-cart-product-name">{title}</div>
-        <div data-testid="shopping-cart-product-quantity">{quantity}</div>
         <div>
-          Quantidade disponível:
-          {availableQuantity}
+          <img src={thumbnail} width="25px" alt={title} />
         </div>
         <div>
-          R$
-          {price}
+          R$ {price}
+        </div>
+        <div>
+          Quantidade disponível: {availableQuantity}
         </div>
         {this.quantityButton()}
+        <div data-testid="shopping-cart-product-quantity">No carrinho: {quantity}</div>
       </div>
     );
   }
