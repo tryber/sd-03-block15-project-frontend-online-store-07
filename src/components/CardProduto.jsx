@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  Button,
+  Typography,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+} from '@material-ui/core';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import './CardProduto.css'
 
 export class CardProduto extends Component {
   constructor(props) {
@@ -18,48 +29,87 @@ export class CardProduto extends Component {
       available_quantity: availableQuantity,
     } = product;
     return (
-      <button
+      <Button
         data-testid="product-add-to-cart"
-        className="btn btn-link"
         value="Adicionar ao Carrinho"
+        size="small"
+        color="default"
+        variant="contained"
         type="button"
-        onClick={() => addToCart(title, price, id, thumbnail, availableQuantity)}
+        onClick={() =>
+          addToCart(title, price, id, thumbnail, availableQuantity)
+        }
       >
         Adicionar ao Carrinho
-      </button>
+      </Button>
     );
   }
 
-  render() {
-    const { product, cart } = this.props;
+  cardContent() {
+    const { product } = this.props;
     const {
       id,
       title,
-      thumbnail,
       price,
       available_quantity: availableQuantity,
       shipping: { free_shipping: freeShipping },
     } = product;
     return (
-      <div data-testid="product">
-        <h4>{title}</h4>
-        <h5>{id}</h5>
-        <img src={thumbnail} alt={title} />
-        <h5>
-          {`Preço: R$ ${price.toFixed(2)}`}
-        </h5>
-        <h5>
-          {`Quantidade disponível: ${availableQuantity}`}
-        </h5>
-        {freeShipping && <h6 data-testid="free-shipping">FRETE GRÁTIS</h6>}
-        {this.addToCartButton()}
-        <Link
-          data-testid="product-detail-link"
-          to={{ pathname: `/details/${id}`, state: { product, cart } }}
-        >
-          Detalhes
-        </Link>
-      </div>
+      <CardContent classes={{ root: 'product-card' }}>
+        <Typography gutterBottom color="textSecondary" variant="overline">
+          {id}
+        </Typography>
+        <Typography gutterBottom color="textPrimary" variant="h5">
+          {title}
+        </Typography>
+        <Typography
+          color="textPrimary"
+          variant="subtitle2"
+          gutterBottom
+        >{`Preço: R$ ${price.toFixed(2)}`}</Typography>
+        {freeShipping && (
+          <Typography
+            gutterBottom
+            color="secondary"
+            variant="caption"
+            data-testid="free-shipping"
+          >
+            <LocalShippingIcon />
+            Frete grátis
+          </Typography>
+        )}
+        <Typography
+          gutterBottom
+          color="textPrimary"
+          variant="caption"
+        >{`Quantidade disponível: ${availableQuantity}`}</Typography>
+      </CardContent>
+    );
+  }
+
+  render() {
+    const { product } = this.props;
+    const { id, title, thumbnail } = product;
+    return (
+      <Card data-testid="product">
+        <CardMedia component="img" image={thumbnail} alt={title} />
+        {this.cardContent()}
+        <CardActionArea>
+          <CardActions>
+            {this.addToCartButton()}
+            <Link
+              color="primary"
+              size="small"
+              data-testid="product-detail-link"
+              to={{ pathname: `/details/${id}`, state: { product } }}
+            >
+              <Button color="primary" size="small">
+                Detalhes
+              </Button>
+            </Link>
+          </CardActions>
+        </CardActionArea>
+      </Card>
     );
   }
 }
