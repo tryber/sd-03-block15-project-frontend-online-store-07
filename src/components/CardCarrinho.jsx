@@ -15,9 +15,8 @@ export class CardCarrinho extends Component {
   }
 
   componentDidUpdate() {
-    // const { id } = this.props;
     const carrinhoLS = JSON.parse(localStorage.getItem('cartProducts'));
-    const indItem = carrinhoLS.findIndex(item => item.id === this.props.product.id);
+    const indItem = carrinhoLS.findIndex((item) => item.id === this.props.product.id);
     carrinhoLS[indItem].quantity = this.state.quantity;
     localStorage.setItem('cartProducts', JSON.stringify(carrinhoLS));
   }
