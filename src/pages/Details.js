@@ -189,12 +189,12 @@ export class Details extends Component {
 
   botaoAdicionarAoCarrinho() {
     const { location: { state: { product } } } = this.props;
-    const { id, price, title, thumbnail, availableQuantity } = product;
+    const { id, price, title, thumbnail, available_quantity } = product;
     return (
       <button
         data-testid="product-detail-add-to-cart"
         type="button"
-        onClick={() => this.adicionarAoCarrinho(title, price, id, thumbnail, availableQuantity)}
+        onClick={() => this.adicionarAoCarrinho(title, price, id, thumbnail, available_quantity)}
       >
         Adicionar ao carrinho
       </button>
